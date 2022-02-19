@@ -1,7 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-require('dotenv').config();
-
+ require('dotenv').config();
 class ConfigService {
 
   constructor(private env: { [k: string]: string | undefined }) { }
@@ -38,8 +37,6 @@ class ConfigService {
       username: this.getValue('MSSQL_USER'),
       password: this.getValue('MSSQL_PASSWORD'),
       database: this.getValue('MSSQL_DATABASE'),
-
-      entities: ['**/*.entity{.ts,.js}'],
 
       migrationsTableName: 'migration',
 

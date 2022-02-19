@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configService = void 0;
 require('dotenv').config();
-console.log(process.env.MSSQL_HOST);
 class ConfigService {
     constructor(env) {
         this.env = env;
