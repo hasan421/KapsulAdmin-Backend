@@ -32,7 +32,6 @@ class ConfigService {
             username: this.getValue('MSSQL_USER'),
             password: this.getValue('MSSQL_PASSWORD'),
             database: this.getValue('MSSQL_DATABASE'),
-            entities: ['**/*.entity{.ts,.js}'],
             migrationsTableName: 'migration',
             migrations: ['src/migration/*.ts'],
             cli: {

@@ -6,6 +6,7 @@ CREATE TABLE ERP.Users
     FirstName VARCHAR(30) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     Phone VARCHAR(20),
+    Token VARCHAR(100),
     SuperVisorId INT ,
     JobId INT FOREIGN KEY REFERENCES ERP.Jobs(JobId),
     IsDeleted BIT DEFAULT 0,
