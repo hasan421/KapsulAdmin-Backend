@@ -7,7 +7,7 @@ CREATE TABLE ERP.Participants
     Sex BIT NOT NULL,
     Age CHAR(3) NOT NULL,
     Education TINYINT NOT NULL,
-    InstitutionId  INT FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
+    InstitutionId  INT NOT NULL FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
     IsDeleted BIT,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME

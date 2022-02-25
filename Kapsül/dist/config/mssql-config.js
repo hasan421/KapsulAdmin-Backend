@@ -50,4 +50,4 @@ const configService = new ConfigService(process.env)
     'MSSQL_DATABASE'
 ]);
 exports.configService = configService;
-//# sourceMappingURL=mssql.config.js.map
+//# sourceMappingURL=mssql-config.js.map

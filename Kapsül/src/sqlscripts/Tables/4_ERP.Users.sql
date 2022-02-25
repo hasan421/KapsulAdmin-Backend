@@ -8,7 +8,7 @@ CREATE TABLE ERP.Users
     Phone VARCHAR(20),
     Token VARCHAR(100),
     SuperVisorId INT ,
-    JobId INT FOREIGN KEY REFERENCES ERP.Jobs(JobId),
+    JobId INT NOT NULL FOREIGN KEY REFERENCES ERP.Jobs(JobId),
     IsDeleted BIT DEFAULT 0,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME

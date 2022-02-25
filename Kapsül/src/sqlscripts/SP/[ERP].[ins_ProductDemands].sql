@@ -21,8 +21,7 @@ CREATE PROCEDURE [ERP].[ins_ProductDemands]
     @TotalPrice NUMERIC(18,2),
     @ProductLink VARCHAR(500) = NULL,
     @ProductImage VARCHAR(100) = NULL,
-    @Recived TINYINT,
-    @SystemDate DATETIME
+    @Recived TINYINT
 
 )
 AS

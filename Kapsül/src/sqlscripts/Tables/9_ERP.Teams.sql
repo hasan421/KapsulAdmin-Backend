@@ -9,7 +9,7 @@ CREATE TABLE ERP.Teams
     TeamPhone VARCHAR(20),
     TeamManagerId INT FOREIGN KEY REFERENCES ERP.Participants(ParticipantId),
     TeamLevel VARCHAR(30) NOT NULL,
-    AdvisorId INT FOREIGN KEY REFERENCES ERP.Advisors(AdvisorId),
+    AdvisorId INT NOT NULL FOREIGN KEY REFERENCES ERP.Advisors(AdvisorId),
     AffiliatedInstitutionId INT FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
     IsDeleted BIT NOT NULL,
     SystemDate DATETIME,

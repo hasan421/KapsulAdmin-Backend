@@ -6,7 +6,7 @@ CREATE TABLE ERP.Advisors
     Phone VARCHAR(20),
     Sex BIT NOT NULL,,
     Age CHAR(3) NOT NULL,
-    WorkInstitutionId INT FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
+    WorkInstitutionId INT NOT NULL FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
     IsDeleted BIT,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME

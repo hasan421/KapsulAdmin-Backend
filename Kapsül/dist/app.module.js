@@ -11,13 +11,12 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const mssql_config_1 = require("./config/mssql.config");
-const config_1 = require("@nestjs/config");
+const mssql_config_1 = require("./config/mssql-config");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forRoot(mssql_config_1.configService.getTypeOrmConfig()), config_1.ConfigModule.forRoot()],
+        imports: [typeorm_1.TypeOrmModule.forRoot(mssql_config_1.configService.getTypeOrmConfig())],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
