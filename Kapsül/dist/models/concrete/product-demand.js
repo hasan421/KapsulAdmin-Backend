@@ -11,7 +11,7 @@ class ProductDemandModel {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
             let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.selectProductDemandScript);
-            returnObject.data = getProductDemandResponse;
+            returnObject.setData = getProductDemandResponse;
         }
         catch (error) {
             returnObject.Result.push(error.message);
@@ -34,7 +34,7 @@ class ProductDemandModel {
                 productDemand.ProductImage,
                 productDemand.Recived,
             ]);
-            returnObject.data = saveProductDemandResponse[0][""];
+            returnObject.setData = saveProductDemandResponse[0][''];
         }
         catch (error) {
             returnObject.Result.push(error.message);

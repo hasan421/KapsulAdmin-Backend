@@ -6,7 +6,7 @@ CREATE TABLE ERP.Institutions
     InstitutionType TINYINT,
     InstitutionPhone VARCHAR(20) NOT NULL,
     InstitutionMailAddress VARCHAR(100) NOT NULL,
-    IsDeleted BIT,
+    IsDeleted BIT DEFAULT 0,
     SystemDate DATETIME,
     UpDateSystemDate DATETIME
 )

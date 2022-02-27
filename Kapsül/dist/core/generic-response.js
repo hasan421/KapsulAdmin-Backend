@@ -5,20 +5,20 @@ class GenericResponse {
     constructor() {
         this.Result = [];
     }
-    get data() {
+    get getData() {
         return this._data;
     }
-    set data(data) {
+    set setData(data) {
         this._data = data;
     }
-    get success() {
+    get getSuccess() {
         if (this.Result != null && this.Result.length > 0)
             this._success = false;
         else
             this._success = true;
         return this._success;
     }
-    set success(success) {
+    set setSuccess(success) {
         this._success = success;
     }
 }

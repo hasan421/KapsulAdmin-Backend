@@ -12,9 +12,4 @@ CREATE TABLE ERP.ProductDemands
     Recived TINYINT NOT NULL,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME
-
-
-
-
-
 )

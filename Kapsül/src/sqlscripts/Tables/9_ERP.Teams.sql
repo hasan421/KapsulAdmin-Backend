@@ -7,13 +7,10 @@ CREATE TABLE ERP.Teams
     TeamWorkType TINYINT NOT NULL,
     TeamMail VARCHAR(30),
     TeamPhone VARCHAR(20),
-    TeamManagerId INT FOREIGN KEY REFERENCES ERP.Participants(ParticipantId),
-    TeamLevel VARCHAR(30) NOT NULL,
+    TeamManagerId INT NOT NULL  FOREIGN KEY REFERENCES ERP.Participants(ParticipantId),
     AdvisorId INT NOT NULL FOREIGN KEY REFERENCES ERP.Advisors(AdvisorId),
-    AffiliatedInstitutionId INT FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
-    IsDeleted BIT NOT NULL,
+    AffiliatedInstitutionId INT NOT NULL FOREIGN KEY REFERENCES ERP.Institutions(InstitutionId),
+    IsDeleted BIT NOT NULL DEFAULT 0,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME
-
-
 )

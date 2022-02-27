@@ -13,7 +13,7 @@ export class ProductDemandModel implements IProductDemandModel {
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.selectProductDemandScript
       );
-      returnObject.data = getProductDemandResponse;
+      returnObject.setData = getProductDemandResponse;
     } catch (error) {
       returnObject.Result.push(error.message);
     }
@@ -40,7 +40,8 @@ export class ProductDemandModel implements IProductDemandModel {
           productDemand.Recived,
         ]
       );
-      returnObject.data = saveProductDemandResponse[0][""];
+      returnObject.setData = saveProductDemandResponse[0][''];
+
     } catch (error) {
       returnObject.Result.push(error.message);
     }
