@@ -34,7 +34,7 @@ class ProductDemandModel {
                 productDemand.ProductImage,
                 productDemand.Recived,
             ]);
-            returnObject.setData = saveProductDemandResponse[0][''];
+            returnObject.setData = saveProductDemandResponse[0][""];
         }
         catch (error) {
             returnObject.Result.push(error.message);

@@ -26,6 +26,7 @@ export class ProductDemandService implements IProductDemandService {
     }
     return returnObject;
   }
+
   async getProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     try {
