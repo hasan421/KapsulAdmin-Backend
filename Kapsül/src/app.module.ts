@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { configService } from "./config/mssql-config";
-import { ProductDemandController } from "./controllers/Concrete/product-demand-controller";
+import { ProductDemandController } from "./controllers/product-demand-controller";
 import { ProductDemandService } from "./services/concrete/product-demand-service";
 
 @Module({
