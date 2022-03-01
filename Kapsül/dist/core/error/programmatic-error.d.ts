@@ -12,3 +12,6 @@ export declare class ZeroPointException extends ProgrammaticError {
 export declare class NonExpectArugumentException extends ProgrammaticError {
     constructor(message?: string);
 }
+export declare class NonImplementMetotException extends ProgrammaticError {
+    constructor(message?: string);
+}

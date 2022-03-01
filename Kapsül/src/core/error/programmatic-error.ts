@@ -30,3 +30,11 @@ export class NonExpectArugumentException extends ProgrammaticError {
     this.errorType = "Argument exception";
   }
 }
+
+export class NonImplementMetotException extends ProgrammaticError {
+  constructor(message?: string) {
+    super(message);
+    Object.setPrototypeOf(this, NonImplementMetotException.prototype);
+    this.errorType = "override exception";
+  }
+}
