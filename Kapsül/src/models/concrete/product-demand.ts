@@ -31,6 +31,7 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject = new GenericResponse<Number>();
 
       let queryManager = getManager();
+
       let saveProductDemandResponse = await queryManager.query(
         ProductDemandScript.insertProductDemandScript,
         [

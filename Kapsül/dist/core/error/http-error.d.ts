@@ -1,10 +1,10 @@
 import { BadRequestErrorMessages, ForbiddenErrorMessages, InternalServerErrorMessages, MethodNotAllowedMessages, NotAcceptableErrorMessages, NotFoundErrorMessages, UnauthorizedErrorMessages, UnsupportedMediaTypeErrorMessages } from "src/utilities/constants/error-message";
 import { HttpStatusCode } from "src/utilities/enums/http-statuscode";
 import { BaseError } from "./base-error";
-export declare abstract class HttpError extends BaseError {
-    statusCode: HttpStatusCode;
+export declare class HttpError extends BaseError {
+    statusCode: HttpStatusCode | 500;
     message: string;
-    constructor(message: string);
+    constructor(message: string, statusCode?: number);
 }
 export declare class BadRequestError extends HttpError {
     constructor(message?: keyof typeof BadRequestErrorMessages);

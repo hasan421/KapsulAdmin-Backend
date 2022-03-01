@@ -1,11 +1,10 @@
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
-import { IProductDemandController } from "../Abstract/IProductDemandController";
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ProductDemandService } from "src/services/concrete/product-demand-service";
 
 @Controller("product-demand")
-export class ProductDemandController implements IProductDemandController {
+export class ProductDemandController {
   constructor(private readonly appService: ProductDemandService) {}
 
   @Post("save-product-demand")
@@ -15,6 +14,7 @@ export class ProductDemandController implements IProductDemandController {
     let returnObject: GenericResponse<Number> = null;
     try {
       returnObject = new GenericResponse<Number>();
+
       let saveProductDemandResponse = await this.appService.saveProductDemand(
         productDemand
       );
@@ -22,6 +22,7 @@ export class ProductDemandController implements IProductDemandController {
         returnObject = saveProductDemandResponse;
         return returnObject;
       }
+
       returnObject = saveProductDemandResponse;
     } catch (error) {
       returnObject.Result.push(error.message);
@@ -29,6 +30,7 @@ export class ProductDemandController implements IProductDemandController {
 
     return returnObject;
   }
+
   @Get()
   getProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
     throw new Error("Method not implemented.");

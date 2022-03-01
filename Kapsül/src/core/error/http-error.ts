@@ -15,12 +15,13 @@ import { BaseError } from "./base-error";
  *HTTP top-level hata sınıfı,hata mesajının ve başarı mesajının görüntülenmesi açısından,
  * bir uygulamayı kullanan izleyiciler için daha iyi bir kullanıcı deneyimi sağlamaya yardımcı olabilir.
  */
-export abstract class HttpError extends BaseError {
-  public statusCode: HttpStatusCode;
+export class HttpError extends BaseError {
+  public statusCode: HttpStatusCode | 500;
   public message: string;
 
-  constructor(message: string) {
+  constructor(message: string, statusCode?: number) {
     super(message);
+    this.statusCode = statusCode ?? 500;
   }
 }
 

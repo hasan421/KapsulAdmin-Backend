@@ -2,6 +2,7 @@ const BadRequestErrorMessages = {
   BASIC_ERROR: _createBasicError("Bad Request"),
   NonFieldMail: "Mail boş olamaz",
   hasanaselam: "selam hasan",
+  emptyMail: "mail boş olamaz",
 };
 
 const UnauthorizedErrorMessages = {

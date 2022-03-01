@@ -2,6 +2,7 @@ declare const BadRequestErrorMessages: {
     BASIC_ERROR: string;
     NonFieldMail: string;
     hasanaselam: string;
+    emptyMail: string;
 };
 declare const UnauthorizedErrorMessages: {
     BASIC_ERROR: string;

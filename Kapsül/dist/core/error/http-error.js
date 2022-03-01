@@ -5,8 +5,9 @@ const error_message_1 = require("../../utilities/constants/error-message");
 const http_statuscode_1 = require("../../utilities/enums/http-statuscode");
 const base_error_1 = require("./base-error");
 class HttpError extends base_error_1.BaseError {
-    constructor(message) {
+    constructor(message, statusCode) {
         super(message);
+        this.statusCode = statusCode !== null && statusCode !== void 0 ? statusCode : 500;
     }
 }
 exports.HttpError = HttpError;

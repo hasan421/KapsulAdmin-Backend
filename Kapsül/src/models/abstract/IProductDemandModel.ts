@@ -1,4 +1,3 @@
-import { IGenericeRepository } from "src/services/abstract/IProductDemandService";
 import { GenericResponse } from "../../core/generic-response";
 import { ProductDemand } from "../../entities/product-demand.entity";
 export interface IProductDemandModel {

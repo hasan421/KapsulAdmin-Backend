@@ -5,6 +5,7 @@ const BadRequestErrorMessages = {
     BASIC_ERROR: _createBasicError("Bad Request"),
     NonFieldMail: "Mail boş olamaz",
     hasanaselam: "selam hasan",
+    emptyMail: "mail boş olamaz",
 };
 exports.BadRequestErrorMessages = BadRequestErrorMessages;
 const UnauthorizedErrorMessages = {
