@@ -1,10 +1,12 @@
+import { HttpError } from "./error/http-error";
+
 export class GenericResponse<T> {
   constructor() {
     this.Result = [];
   }
 
   private _success: boolean;
-  public Result: Array<Error>;
+  public Result: Array<HttpError>;
   private _data: T;
 
   public get getData() {

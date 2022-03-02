@@ -26,17 +26,22 @@ export class ProductDemandService implements IProductDemandService {
     }
     return returnObject;
   }
+
   async getProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
+
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
+
       this.productDemandModel = new ProductDemandModel();
       let getProductDemandResponse =
         await this.productDemandModel.getProductDemand();
+
       if (!getProductDemandResponse.getSuccess) {
         returnObject = getProductDemandResponse;
         return returnObject;
       }
+
       returnObject.setData = getProductDemandResponse.setData;
     } catch (error) {
       returnObject.Result.push(error.message);

@@ -5,5 +5,6 @@ export interface IProductDemandService {
   saveProductDemand(
     productDemand: ProductDemand
   ): Promise<GenericResponse<Number>>;
+
   getProductDemand(): Promise<GenericResponse<ProductDemand[]>>;
 }

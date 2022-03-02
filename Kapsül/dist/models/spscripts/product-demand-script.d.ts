@@ -1,4 +1,4 @@
 export declare abstract class ProductDemandScript {
-    static insertProductDemandScript: string;
-    static selectProductDemandScript: string;
+    static readonly insertProductDemandScript: string;
+    static readonly selectProductDemandScript = "EXEC ERP.sel_ProductDemands";
 }

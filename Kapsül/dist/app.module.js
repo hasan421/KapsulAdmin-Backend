@@ -12,7 +12,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const mssql_config_1 = require("./config/mssql-config");
-const product_demand_controller_1 = require("./controllers/Concrete/product-demand-controller");
+const product_demand_controller_1 = require("./controllers/product-demand-controller");
 const product_demand_service_1 = require("./services/concrete/product-demand-service");
 let AppModule = class AppModule {
 };
