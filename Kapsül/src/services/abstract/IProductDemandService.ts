@@ -1,10 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { GenericResponse } from "src/core/generic-response";
+import { IRepository } from "src/core/IRepository";
 import { ProductDemand } from "src/entities/product-demand.entity";
-export interface IProductDemandService {
-  saveProductDemand(
-    productDemand: ProductDemand
-  ): Promise<GenericResponse<Number>>;
-
-  getProductDemand(): Promise<GenericResponse<ProductDemand[]>>;
+export interface IProductDemandService extends IRepository<ProductDemand> {
+ 
 }

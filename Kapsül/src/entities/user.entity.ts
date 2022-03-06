@@ -1,16 +1,16 @@
 export class UserEntity
 {
-    UserName:string
-    Password:string
-    FirstName:string
-    LastName:string
-    Phone:string
-    Token:string
-    SupervisorId:number
-    JobId:number
-    JobName:string
-    IsDeleted:number
-    SystemDate:Date
-    UpdateSystemDate:Date
+    userName:string
+    password:string
+    firstName:string
+    lastName:string
+    phone:string
+    token:string
+    supervisorId:number
+    jobId:number
+    jobName:string
+    isDeleted:number
+    systemDate:Date
+    updateSystemDate:Date
 
 }

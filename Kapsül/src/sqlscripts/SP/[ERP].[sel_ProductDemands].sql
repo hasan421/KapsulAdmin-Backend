@@ -30,6 +30,6 @@ INNER JOIN ERP.ProductDemands PS WITH (NOLOCK)
 ON TP.ProductId = PS.ProductId
 INNER JOIN ERP.Teams TS WITH (NOLOCK)
 ON TS.TeamId = TP.TeamId
-WHERE Recived = 0
+WHERE PS.Recived = 0 AND PS.IsDeleted = 0
 
 END
