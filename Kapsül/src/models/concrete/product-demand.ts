@@ -4,6 +4,7 @@ import { ProductDemand } from "../../entities/product-demand.entity";
 import { getManager } from "typeorm";
 import { ProductDemandScript } from "../spscripts/product-demand-script";
 import { HttpError } from "src/core/error/http-error";
+import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
 
 export class ProductDemandModel implements IProductDemandModel {
   async UpdateRecivedProductDemand(
@@ -19,7 +20,7 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject.setData = updatePurchedProductResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
 
@@ -34,7 +35,7 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject.setData = getPurchedProductResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
 
@@ -52,7 +53,7 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject = getProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu"));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
 
@@ -69,7 +70,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = getProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
   }
@@ -98,7 +99,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = saveProductDemandResponse[0][''];
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
   }
@@ -122,7 +123,7 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject.setData = updateProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
 
@@ -139,7 +140,7 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject.setData = deletePurchedProductResponse;
       return returnObject;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
   }
 }
