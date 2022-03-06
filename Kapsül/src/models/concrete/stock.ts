@@ -80,7 +80,6 @@ export class Stock implements IStock {
       );
       returnObject.setData = updateStockResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
@@ -96,7 +95,6 @@ export class Stock implements IStock {
       );
       returnObject.setData = deleteStockResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
