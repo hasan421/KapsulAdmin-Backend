@@ -10,6 +10,7 @@ CREATE TABLE ERP.ProductDemands
     ProductLink VARCHAR(500),
     ProductImage VARCHAR (100),
     Recived TINYINT NOT NULL,
+    IsDeleted BIT DEFAULT 0,
     SystemDate DATETIME,
     UpdateSystemDate DATETIME
 )
