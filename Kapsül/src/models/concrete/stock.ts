@@ -98,6 +98,5 @@ export class Stock implements IStock {
       returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
-
   }
 }
