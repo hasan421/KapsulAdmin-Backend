@@ -1,6 +1,7 @@
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
+import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
 import { getManager } from "typeorm";
 import { IStock } from "../abstract/IStock";
 import { StockScript } from "../spscripts/stock-script";
@@ -20,7 +21,7 @@ export class Stock implements IStock {
       returnObject.setData = updatStockQuantityResponse;
       return returnObject;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
   }
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
@@ -35,7 +36,7 @@ export class Stock implements IStock {
 
       returnObject.setData = getStockResponse;
     } catch (error) {
-      returnObject.Result.push(error.message);
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
   }
@@ -58,7 +59,7 @@ export class Stock implements IStock {
 
       returnObject.setData = saveStockResponse[0][''];
     } catch (error) {
-      returnObject.Result.push(error.message);
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
   }

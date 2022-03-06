@@ -3,6 +3,7 @@ import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
 import { ProductDemandModel } from "src/models/concrete/product-demand";
+import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
 import { IProductDemandService } from "../abstract/IProductDemandService";
 @Injectable()
 export class ProductDemandService implements IProductDemandService {
@@ -25,7 +26,7 @@ export class ProductDemandService implements IProductDemandService {
 
       returnObject.setData = getProductDemandResponse.setData;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
 
     return returnObject;
@@ -44,7 +45,7 @@ export class ProductDemandService implements IProductDemandService {
       }
       returnObject = saveProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu'));
+      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;  }
   Update(entity: ProductDemand): Promise<GenericResponse<Number>> {

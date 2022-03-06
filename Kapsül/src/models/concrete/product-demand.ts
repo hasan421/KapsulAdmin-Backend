@@ -69,7 +69,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = getProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(error.message);
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
   }
@@ -98,7 +98,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = saveProductDemandResponse[0][''];
     } catch (error) {
-      returnObject.Result.push(error.message);
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
   }
