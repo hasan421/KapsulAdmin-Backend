@@ -20,6 +20,7 @@ SET NOCOUNT ON
 BEGIN
 UPDATE ERP.Stocks  
 SET StockQuantity = @StockQuantity
+    UpdateSystemDate = GETDATE()
 WHERE StockId = @StockId
 
 END

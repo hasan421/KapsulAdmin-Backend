@@ -16,10 +16,11 @@ export class ProductDemandModel implements IProductDemandModel {
       let queryManager = getManager();
       let updatePurchedProductResponse = await queryManager.query(
         ProductDemandScript.updatePurchasedProduct,
-        [entity.recived]
+        [entity.productId]
       );
       returnObject.setData = updatePurchedProductResponse;
     } catch (error) {
+      console.log(error);
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
@@ -53,6 +54,7 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject = getProductDemandResponse;
     } catch (error) {
+      console.log(error);
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;
@@ -67,7 +69,7 @@ export class ProductDemandModel implements IProductDemandModel {
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.selectProductDemandScript
       );
-
+      console.log(getProductDemandResponse);
       returnObject.setData = getProductDemandResponse;
     } catch (error) {
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
@@ -81,7 +83,6 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject = new GenericResponse<Number>();
 
       let queryManager = getManager();
-
       let saveProductDemandResponse = await queryManager.query(
         ProductDemandScript.insertProductDemandScript,
         [
@@ -99,7 +100,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = saveProductDemandResponse[0][''];
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(error);
     }
     return returnObject;
   }
@@ -108,11 +109,13 @@ export class ProductDemandModel implements IProductDemandModel {
     try {
       returnObject = new GenericResponse<Number>();
       let queryManager = getManager();
+      console.log(entity);
       let updateProductDemandResponse = await queryManager.query(
         ProductDemandScript.updateProductDemand,
         [
           entity.productId,
           entity.productName,
+          entity.productType,
           entity.productCode,
           entity.quantity,
           entity.quantityPrice,
@@ -121,8 +124,10 @@ export class ProductDemandModel implements IProductDemandModel {
           entity.productImage
         ]
       );
+
       returnObject.setData = updateProductDemandResponse;
     } catch (error) {
+      console.log(error.message);
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
     return returnObject;

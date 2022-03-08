@@ -1,14 +1,21 @@
 export declare class ProductDemand {
-    ProductName: string;
-    ProductType?: number;
-    ProductCode: string;
-    Quantity: number;
-    QuantityPrice: number;
-    TotalPrice: number;
-    ProductLink?: string;
-    ProductImage?: string;
-    Recived: number;
-    SystemDate: Date;
-    TeamName: string;
-    UpdateSystemDate: Date;
+    productName: string;
+    productType?: number;
+    productCode: string;
+    quantity: number;
+    quantityPrice: number;
+    quantityType?: number;
+    totalPrice: number;
+    productLink?: string | null;
+    productImage?: string;
+    recived: number;
+    systemDate: Date;
+    teamName: string;
+    productControl?: number;
+    stockControl?: number;
+    updateSystemDate: Date;
+    productId: number;
+    teamId: number;
+    stockId: number;
+    stockQuantity: number;
 }

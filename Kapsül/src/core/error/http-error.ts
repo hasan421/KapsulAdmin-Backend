@@ -22,7 +22,11 @@ export class HttpError extends BaseError {
   constructor(message: string, statusCode?: number) {
     super(message);
     this.statusCode = statusCode ?? 500;
+    this.message = message;
+    Object.setPrototypeOf(this, HttpError.prototype);
+
   }
+  
 }
 
 /**

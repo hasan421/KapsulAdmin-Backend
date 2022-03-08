@@ -7,6 +7,29 @@ import { IStock } from "../abstract/IStock";
 import { StockScript } from "../spscripts/stock-script";
 
 export class Stock implements IStock {
+  async ControlStockByProductCode(
+    entity: ProductDemand
+  ): Promise<GenericResponse<Number>> {
+    let returnObject: GenericResponse<Number> = null;
+    try {
+      returnObject = new GenericResponse<Number>();
+      let queryManager = getManager();
+      let controlStockByProductCodeResponse = await queryManager.query(
+        StockScript.selectControlStockByProductCode,
+        [entity.productCode]
+      );
+      controlStockByProductCodeResponse = controlStockByProductCodeResponse[0]
+        ? controlStockByProductCodeResponse[0]['']
+        : null;
+      returnObject.setData = controlStockByProductCodeResponse;
+      return returnObject;
+    } catch (error) {
+      returnObject.Result.push(
+        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+      );
+    }
+    return returnObject;
+  }
   async UpdateStockQuantity(
     entity: ProductDemand
   ): Promise<GenericResponse<Number>> {
@@ -21,7 +44,9 @@ export class Stock implements IStock {
       returnObject.setData = updatStockQuantityResponse;
       return returnObject;
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(
+        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+      );
     }
   }
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
@@ -30,13 +55,14 @@ export class Stock implements IStock {
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
       let queryManager = getManager();
-      let getStockResponse = await queryManager.query(
-        StockScript.selectStock
-      );
+      let getStockResponse = await queryManager.query(StockScript.selectStock);
 
       returnObject.setData = getStockResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      console.log(error.message);
+      returnObject.Result.push(
+        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+      );
     }
     return returnObject;
   }
@@ -57,9 +83,11 @@ export class Stock implements IStock {
         ]
       );
 
-      returnObject.setData = saveStockResponse[0][''];
+      returnObject.setData = saveStockResponse[0][""];
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(
+        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+      );
     }
     return returnObject;
   }
@@ -71,16 +99,18 @@ export class Stock implements IStock {
       let updateStockResponse = await queryManager.query(
         StockScript.updateStock,
         [
+          entity.stockId,
           entity.productId,
           entity.teamId,
           entity.stockQuantity,
           entity.quantityType,
-         
         ]
       );
       returnObject.setData = updateStockResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(
+        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+      );
     }
     return returnObject;
   }

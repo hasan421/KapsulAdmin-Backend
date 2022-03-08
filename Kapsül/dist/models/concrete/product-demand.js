@@ -4,42 +4,124 @@ exports.ProductDemandModel = void 0;
 const generic_response_1 = require("../../core/generic-response");
 const typeorm_1 = require("typeorm");
 const product_demand_script_1 = require("../spscripts/product-demand-script");
+const http_error_1 = require("../../core/error/http-error");
+const error_message_1 = require("../../utilities/constants/error-message");
 class ProductDemandModel {
-    async getProductDemand() {
+    async UpdateRecivedProductDemand(entity) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let queryManager = (0, typeorm_1.getManager)();
+            let updatePurchedProductResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.updatePurchasedProduct, [entity.productId]);
+            returnObject.setData = updatePurchedProductResponse;
+        }
+        catch (error) {
+            console.log(error);
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+        }
+        return returnObject;
+    }
+    async GetPurchasedProductDemand() {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let queryManager = (0, typeorm_1.getManager)();
+            let getPurchedProductResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.selectPurchasedProduct);
+            returnObject.setData = getPurchedProductResponse;
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+        }
+        return returnObject;
+    }
+    async SaveTeamsProductDemand(entity) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let queryManager = (0, typeorm_1.getManager)();
+            let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertTeamsProduct, [entity.productId, entity.teamId]);
+            returnObject = getProductDemandResponse;
+        }
+        catch (error) {
+            console.log(error);
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+        }
+        return returnObject;
+    }
+    async GetAll() {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
             let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.selectProductDemandScript);
+            console.log(getProductDemandResponse);
             returnObject.setData = getProductDemandResponse;
         }
         catch (error) {
-            returnObject.Result.push(error.message);
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
         }
         return returnObject;
     }
-    async saveProductDemand(productDemand) {
+    async Create(entity) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
             let saveProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertProductDemandScript, [
-                productDemand.ProductName,
-                productDemand.ProductType,
-                productDemand.ProductCode,
-                productDemand.Quantity,
-                productDemand.QuantityPrice,
-                productDemand.TotalPrice,
-                productDemand.ProductLink,
-                productDemand.ProductImage,
-                productDemand.Recived,
+                entity.productName,
+                entity.productType,
+                entity.productCode,
+                entity.quantity,
+                entity.quantityPrice,
+                entity.totalPrice,
+                entity.productLink,
+                entity.productImage,
+                entity.recived,
             ]);
-            returnObject.setData = saveProductDemandResponse[0][""];
+            returnObject.setData = saveProductDemandResponse[0][''];
         }
         catch (error) {
-            returnObject.Result.push(error.message);
+            returnObject.Result.push(error);
         }
         return returnObject;
+    }
+    async Update(entity) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let queryManager = (0, typeorm_1.getManager)();
+            console.log(entity);
+            let updateProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.updateProductDemand, [
+                entity.productId,
+                entity.productName,
+                entity.productType,
+                entity.productCode,
+                entity.quantity,
+                entity.quantityPrice,
+                entity.totalPrice,
+                entity.productLink,
+                entity.productImage
+            ]);
+            returnObject.setData = updateProductDemandResponse;
+        }
+        catch (error) {
+            console.log(error.message);
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+        }
+        return returnObject;
+    }
+    async Delete(entity) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let queryManager = (0, typeorm_1.getManager)();
+            let deletePurchedProductResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.deleteProductDemand, [entity.productId]);
+            returnObject.setData = deletePurchedProductResponse;
+            return returnObject;
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+        }
     }
 }
 exports.ProductDemandModel = ProductDemandModel;

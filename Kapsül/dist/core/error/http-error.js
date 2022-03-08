@@ -8,6 +8,8 @@ class HttpError extends base_error_1.BaseError {
     constructor(message, statusCode) {
         super(message);
         this.statusCode = statusCode !== null && statusCode !== void 0 ? statusCode : 500;
+        this.message = message;
+        Object.setPrototypeOf(this, HttpError.prototype);
     }
 }
 exports.HttpError = HttpError;

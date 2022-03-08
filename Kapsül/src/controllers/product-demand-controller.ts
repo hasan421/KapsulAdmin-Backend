@@ -3,6 +3,7 @@ import { ProductDemand } from "src/entities/product-demand.entity";
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ProductDemandService } from "src/services/concrete/product-demand-service";
 import { HttpError } from "src/core/error/http-error";
+import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
 
 @Controller("product-demand")
 export class ProductDemandController {
@@ -26,7 +27,7 @@ export class ProductDemandController {
 
       returnObject = saveProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'));
+     // returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
 
     return returnObject;
@@ -49,5 +50,6 @@ export class ProductDemandController {
       returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'))
       
     }
+    return returnObject;
   }
 }

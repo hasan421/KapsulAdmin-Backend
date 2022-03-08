@@ -6,7 +6,7 @@ export class ProductDemand {
   quantityPrice: number;
   quantityType?:number;
   totalPrice: number;
-  productLink?: string;
+  productLink?: string|null;
   productImage?: string;
   recived: number;
   systemDate: Date;

@@ -23,8 +23,7 @@ export class ProductDemandService implements IProductDemandService {
         returnObject = getProductDemandResponse;
         return returnObject;
       }
-
-      returnObject.setData = getProductDemandResponse.setData;
+      returnObject = getProductDemandResponse;
     } catch (error) {
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
