@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
-import { ProductDemand } from "src/entities/product-demand.entity";
+import { ProductDemand } from "src/entities/team-product-demand.entity";
 import { ProductDemandModel } from "src/models/concrete/product-demand";
 import { IProductDemandService } from "../abstract/IProductDemandService";
 @Injectable()
@@ -15,8 +15,7 @@ export class ProductDemandService implements IProductDemandService {
       returnObject = new GenericResponse<ProductDemand[]>();
 
       this.productDemandModel = new ProductDemandModel();
-      let getProductDemandResponse =
-        await this.productDemandModel.GetAll();
+      let getProductDemandResponse = await this.productDemandModel.GetAll();
 
       if (!getProductDemandResponse.getSuccess) {
         returnObject = getProductDemandResponse;
@@ -25,7 +24,7 @@ export class ProductDemandService implements IProductDemandService {
 
       returnObject.setData = getProductDemandResponse.setData;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'));
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
 
     return returnObject;
@@ -36,22 +35,45 @@ export class ProductDemandService implements IProductDemandService {
     try {
       returnObject = new GenericResponse<Number>();
       this.productDemandModel = new ProductDemandModel();
-      let saveProductDemandResponse =
-        await this.productDemandModel.Create(entity);
+      let saveProductDemandResponse = await this.productDemandModel.Create(
+        entity
+      );
       if (!saveProductDemandResponse.getSuccess) {
         returnObject = saveProductDemandResponse;
         return returnObject;
       }
       returnObject = saveProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu'));
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu"));
     }
-    return returnObject;  }
+    return returnObject;
+  }
+
+  async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+    let returnObject: GenericResponse<ProductDemand[]> = null;
+    try {
+      returnObject = new GenericResponse<ProductDemand[]>();
+      this.productDemandModel = new ProductDemandModel();
+      let getPurchasedProductDemandResponse =
+        await this.productDemandModel.GetPurchasedProductDemand();
+
+      if (!getPurchasedProductDemandResponse.getSuccess) {
+        returnObject = getPurchasedProductDemandResponse;
+        return returnObject;
+      }
+
+      returnObject = getPurchasedProductDemandResponse;
+    } catch (error) {
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu"));
+    }
+
+    return returnObject;
+  }
+
   Update(entity: ProductDemand): Promise<GenericResponse<Number>> {
     throw new Error("Method not implemented.");
   }
   Delete(entity: ProductDemand): Promise<GenericResponse<Number>> {
     throw new Error("Method not implemented.");
   }
-
 }

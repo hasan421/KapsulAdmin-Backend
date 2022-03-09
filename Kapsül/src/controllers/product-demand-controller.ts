@@ -1,5 +1,5 @@
 import { GenericResponse } from "src/core/generic-response";
-import { ProductDemand } from "src/entities/product-demand.entity";
+import { ProductDemand } from "src/entities/team-product-demand.entity";
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ProductDemandService } from "src/services/concrete/product-demand-service";
 import { HttpError } from "src/core/error/http-error";
@@ -26,28 +26,47 @@ export class ProductDemandController {
 
       returnObject = saveProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'));
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
 
     return returnObject;
   }
 
-  @Get('get-product-demand')
+  @Get("get-product-demand")
   async getProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
-    let returnObject:GenericResponse<ProductDemand[]> = null
+    let returnObject: GenericResponse<ProductDemand[]> = null;
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
       let getProductDemandResponse = await this.appService.GetAll();
-      if(!getProductDemandResponse.getSuccess)
-      {
-        returnObject = getProductDemandResponse; 
+      if (!getProductDemandResponse.getSuccess) {
+        returnObject = getProductDemandResponse;
         return returnObject;
       }
       returnObject = getProductDemandResponse;
-
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'))
-      
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
+
+    return returnObject;
+  }
+
+  @Get("get-purchaned-product-demand")
+  async getPurchanedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+    let returnObject: GenericResponse<ProductDemand[]> = null;
+
+    try {
+      returnObject = new GenericResponse<ProductDemand[]>();
+      let getPurchanedProductDemandResponse =
+        await this.appService.GetPurchasedProductDemand();
+
+      if (!getPurchanedProductDemandResponse.getSuccess) {
+        returnObject = getPurchanedProductDemandResponse;
+        return returnObject;
+      }
+    } catch (error) {
+      returnObject.Result.push(new HttpError("İşlem sırasında hata oluşty"));
+    }
+
+    return returnObject;
   }
 }

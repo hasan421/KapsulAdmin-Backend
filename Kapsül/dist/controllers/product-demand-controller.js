@@ -14,9 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDemandController = void 0;
 const generic_response_1 = require("../core/generic-response");
-const product_demand_entity_1 = require("../entities/product-demand.entity");
+const team_product_demand_entity_1 = require("../entities/team-product-demand.entity");
 const common_1 = require("@nestjs/common");
 const product_demand_service_1 = require("../services/concrete/product-demand-service");
+const http_error_1 = require("../core/error/http-error");
 let ProductDemandController = class ProductDemandController {
     constructor(appService) {
         this.appService = appService;
@@ -25,7 +26,7 @@ let ProductDemandController = class ProductDemandController {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
-            let saveProductDemandResponse = await this.appService.saveProductDemand(productDemand);
+            let saveProductDemandResponse = await this.appService.Create(productDemand);
             if (!saveProductDemandResponse.getSuccess) {
                 returnObject = saveProductDemandResponse;
                 return returnObject;
@@ -33,27 +34,61 @@ let ProductDemandController = class ProductDemandController {
             returnObject = saveProductDemandResponse;
         }
         catch (error) {
-            returnObject.Result.push(error.message);
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu."));
         }
         return returnObject;
     }
-    getProductDemand() {
-        throw new Error("Method not implemented.");
+    async getProductDemand() {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let getProductDemandResponse = await this.appService.GetAll();
+            if (!getProductDemandResponse.getSuccess) {
+                returnObject = getProductDemandResponse;
+                return returnObject;
+            }
+            returnObject = getProductDemandResponse;
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu."));
+        }
+        return returnObject;
+    }
+    async getPurchanedProductDemand() {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let getPurchanedProductDemandResponse = await this.appService.GetPurchasedProductDemand();
+            if (!getPurchanedProductDemandResponse.getSuccess) {
+                returnObject = getPurchanedProductDemandResponse;
+                return returnObject;
+            }
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluşty"));
+        }
+        return returnObject;
     }
 };
 __decorate([
     (0, common_1.Post)("save-product-demand"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand]),
+    __metadata("design:paramtypes", [team_product_demand_entity_1.ProductDemand]),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "saveProductDemand", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)("get-product-demand"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "getProductDemand", null);
+__decorate([
+    (0, common_1.Get)("get-purchaned-product-demand"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ProductDemandController.prototype, "getPurchanedProductDemand", null);
 ProductDemandController = __decorate([
     (0, common_1.Controller)("product-demand"),
     __metadata("design:paramtypes", [product_demand_service_1.ProductDemandService])

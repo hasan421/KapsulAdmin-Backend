@@ -4,18 +4,18 @@ export class ProductDemand {
   productCode: string;
   quantity: number;
   quantityPrice: number;
-  quantityType?:number;
+  quantityType?: number;
   totalPrice: number;
   productLink?: string;
   productImage?: string;
   recived: number;
   systemDate: Date;
   teamName: string;
-  productControl?:number;
-  stockControl?:number;
+  productControl?: number;
+  stockControl?: number;
   updateSystemDate: Date;
-  productId:number;
-  teamId:number;
-  stockId:number;
-  stockQuantity:number;
+  productId: number;
+  teamId: number;
+  stockId: number;
+  stockQuantity: number;
 }

@@ -1,6 +1,6 @@
 import { IProductDemandModel } from "../abstract/IProductDemandModel";
 import { GenericResponse } from "../../core/generic-response";
-import { ProductDemand } from "../../entities/product-demand.entity";
+import { ProductDemand } from "../../entities/team-product-demand.entity";
 import { getManager } from "typeorm";
 import { ProductDemandScript } from "../spscripts/product-demand-script";
 import { HttpError } from "src/core/error/http-error";
@@ -22,8 +22,8 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
-
   }
+
   async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     try {
@@ -34,11 +34,11 @@ export class ProductDemandModel implements IProductDemandModel {
       );
       returnObject.setData = getPurchedProductResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
+      returnObject.Result.push(error.message);
     }
     return returnObject;
-
   }
+
   async SaveTeamsProductDemand(
     entity: ProductDemand
   ): Promise<GenericResponse<Number>> {
@@ -50,13 +50,13 @@ export class ProductDemandModel implements IProductDemandModel {
         ProductDemandScript.insertTeamsProduct,
         [entity.productId, entity.teamId]
       );
-      returnObject = getProductDemandResponse;
+      returnObject.setData = getProductDemandResponse;
     } catch (error) {
       returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu"));
     }
     return returnObject;
-
   }
+
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
 
@@ -96,12 +96,13 @@ export class ProductDemandModel implements IProductDemandModel {
         ]
       );
 
-      returnObject.setData = saveProductDemandResponse[0][''];
+      returnObject.setData = saveProductDemandResponse[0][""];
     } catch (error) {
       returnObject.Result.push(error.message);
     }
     return returnObject;
   }
+
   async Update(entity: ProductDemand): Promise<GenericResponse<Number>> {
     let returnObject: GenericResponse<Number> = null;
     try {
@@ -117,7 +118,7 @@ export class ProductDemandModel implements IProductDemandModel {
           entity.quantityPrice,
           entity.totalPrice,
           entity.productLink,
-          entity.productImage
+          entity.productImage,
         ]
       );
       returnObject.setData = updateProductDemandResponse;
@@ -125,8 +126,8 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
-
   }
+
   async Delete(entity: ProductDemand): Promise<GenericResponse<Number>> {
     let returnObject: GenericResponse<Number> = null;
     try {

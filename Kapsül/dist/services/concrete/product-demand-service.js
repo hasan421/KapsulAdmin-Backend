@@ -8,32 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDemandService = void 0;
 const common_1 = require("@nestjs/common");
+const http_error_1 = require("../../core/error/http-error");
 const generic_response_1 = require("../../core/generic-response");
 const product_demand_1 = require("../../models/concrete/product-demand");
 let ProductDemandService = class ProductDemandService {
-    async saveProductDemand(productDemand) {
+    async GetAll() {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
             this.productDemandModel = new product_demand_1.ProductDemandModel();
-            let saveProductDemandResponse = await this.productDemandModel.saveProductDemand(productDemand);
-            if (!saveProductDemandResponse.getSuccess) {
-                returnObject = saveProductDemandResponse;
-                return returnObject;
-            }
-            returnObject = saveProductDemandResponse;
-        }
-        catch (error) {
-            returnObject.Result.push(error.message);
-        }
-        return returnObject;
-    }
-    async getProductDemand() {
-        let returnObject = null;
-        try {
-            returnObject = new generic_response_1.GenericResponse();
-            this.productDemandModel = new product_demand_1.ProductDemandModel();
-            let getProductDemandResponse = await this.productDemandModel.getProductDemand();
+            let getProductDemandResponse = await this.productDemandModel.GetAll();
             if (!getProductDemandResponse.getSuccess) {
                 returnObject = getProductDemandResponse;
                 return returnObject;
@@ -41,9 +25,49 @@ let ProductDemandService = class ProductDemandService {
             returnObject.setData = getProductDemandResponse.setData;
         }
         catch (error) {
-            returnObject.Result.push(error.message);
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu."));
         }
         return returnObject;
+    }
+    async Create(entity) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            this.productDemandModel = new product_demand_1.ProductDemandModel();
+            let saveProductDemandResponse = await this.productDemandModel.Create(entity);
+            if (!saveProductDemandResponse.getSuccess) {
+                returnObject = saveProductDemandResponse;
+                return returnObject;
+            }
+            returnObject = saveProductDemandResponse;
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu"));
+        }
+        return returnObject;
+    }
+    async GetPurchasedProductDemand() {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            this.productDemandModel = new product_demand_1.ProductDemandModel();
+            let getPurchasedProductDemandResponse = await this.productDemandModel.GetPurchasedProductDemand();
+            if (!getPurchasedProductDemandResponse.getSuccess) {
+                returnObject = getPurchasedProductDemandResponse;
+                return returnObject;
+            }
+            returnObject = getPurchasedProductDemandResponse;
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu"));
+        }
+        return returnObject;
+    }
+    Update(entity) {
+        throw new Error("Method not implemented.");
+    }
+    Delete(entity) {
+        throw new Error("Method not implemented.");
     }
 };
 ProductDemandService = __decorate([

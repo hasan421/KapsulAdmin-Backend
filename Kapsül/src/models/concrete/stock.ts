@@ -1,6 +1,6 @@
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
-import { ProductDemand } from "src/entities/product-demand.entity";
+import { ProductDemand } from "src/entities/team-product-demand.entity";
 import { getManager } from "typeorm";
 import { IStock } from "../abstract/IStock";
 import { StockScript } from "../spscripts/stock-script";
@@ -29,9 +29,7 @@ export class Stock implements IStock {
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
       let queryManager = getManager();
-      let getStockResponse = await queryManager.query(
-        StockScript.selectStock
-      );
+      let getStockResponse = await queryManager.query(StockScript.selectStock);
 
       returnObject.setData = getStockResponse;
     } catch (error) {
@@ -56,7 +54,7 @@ export class Stock implements IStock {
         ]
       );
 
-      returnObject.setData = saveStockResponse[0][''];
+      returnObject.setData = saveStockResponse[0][""];
     } catch (error) {
       returnObject.Result.push(error.message);
     }
@@ -74,7 +72,6 @@ export class Stock implements IStock {
           entity.teamId,
           entity.stockQuantity,
           entity.quantityType,
-         
         ]
       );
       returnObject.setData = updateStockResponse;
@@ -97,6 +94,5 @@ export class Stock implements IStock {
       returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu."));
     }
     return returnObject;
-
   }
 }
