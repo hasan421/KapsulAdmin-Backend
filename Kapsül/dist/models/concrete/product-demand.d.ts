@@ -4,9 +4,9 @@ import { ProductDemand } from "../../entities/product-demand.entity";
 export declare class ProductDemandModel implements IProductDemandModel {
     UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<Number>>;
     GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>>;
-    SaveTeamsProductDemand(entity: ProductDemand): Promise<GenericResponse<Number>>;
+    SaveTeamsProductDemand(entity: ProductDemand): Promise<GenericResponse<number>>;
     GetAll(): Promise<GenericResponse<ProductDemand[]>>;
-    Create(entity: ProductDemand): Promise<GenericResponse<Number>>;
+    Create(entity: ProductDemand): Promise<GenericResponse<number>>;
     Update(entity: ProductDemand): Promise<GenericResponse<Number>>;
     Delete(entity: ProductDemand): Promise<GenericResponse<Number>>;
 }

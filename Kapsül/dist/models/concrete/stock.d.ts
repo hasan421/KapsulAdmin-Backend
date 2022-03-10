@@ -5,7 +5,7 @@ export declare class Stock implements IStock {
     ControlStockByProductCode(entity: ProductDemand): Promise<GenericResponse<Number>>;
     UpdateStockQuantity(entity: ProductDemand): Promise<GenericResponse<Number>>;
     GetAll(): Promise<GenericResponse<ProductDemand[]>>;
-    Create(entity: ProductDemand): Promise<GenericResponse<Number>>;
-    Update(entity: ProductDemand): Promise<GenericResponse<Number>>;
-    Delete(entity: ProductDemand): Promise<GenericResponse<Number>>;
+    Create(entity: ProductDemand): Promise<GenericResponse<number>>;
+    Update(entity: ProductDemand): Promise<GenericResponse<number>>;
+    Delete(entity: ProductDemand): Promise<GenericResponse<number>>;
 }

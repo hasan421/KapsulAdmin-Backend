@@ -14,15 +14,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDemandController = void 0;
 const generic_response_1 = require("../core/generic-response");
-const product_demand_entity_1 = require("../entities/product-demand.entity");
 const common_1 = require("@nestjs/common");
 const product_demand_service_1 = require("../services/concrete/product-demand-service");
 const http_error_1 = require("../core/error/http-error");
+const error_message_1 = require("../utilities/constants/error-message");
 let ProductDemandController = class ProductDemandController {
     constructor(appService) {
         this.appService = appService;
     }
-    async saveProductDemand(productDemand) {
+    async saveProductDemand(productDemand, response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
@@ -31,13 +31,15 @@ let ProductDemandController = class ProductDemandController {
                 returnObject = saveProductDemandResponse;
                 return returnObject;
             }
+            response.statusCode = saveProductDemandResponse.Result[0].statusCode;
             returnObject = saveProductDemandResponse;
         }
         catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
         }
         return returnObject;
     }
-    async getProductDemand() {
+    async getProductDemand(response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
@@ -46,6 +48,7 @@ let ProductDemandController = class ProductDemandController {
                 returnObject = getProductDemandResponse;
                 return returnObject;
             }
+            response.statusCode = getProductDemandResponse.Result[0].statusCode;
             returnObject = getProductDemandResponse;
         }
         catch (error) {
@@ -57,14 +60,16 @@ let ProductDemandController = class ProductDemandController {
 __decorate([
     (0, common_1.Post)("save-product-demand"),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand]),
+    __metadata("design:paramtypes", [Array, Object]),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "saveProductDemand", null);
 __decorate([
     (0, common_1.Get)('get-product-demand'),
+    __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "getProductDemand", null);
 ProductDemandController = __decorate([

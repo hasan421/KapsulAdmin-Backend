@@ -66,10 +66,10 @@ export class Stock implements IStock {
     }
     return returnObject;
   }
-  async Create(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+  async Create(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
 
       let queryManager = getManager();
 
@@ -91,10 +91,10 @@ export class Stock implements IStock {
     }
     return returnObject;
   }
-  async Update(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+  async Update(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
       let queryManager = getManager();
       let updateStockResponse = await queryManager.query(
         StockScript.updateStock,
@@ -114,10 +114,10 @@ export class Stock implements IStock {
     }
     return returnObject;
   }
-  async Delete(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+  async Delete(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
       let queryManager = getManager();
       let deleteStockResponse = await queryManager.query(
         StockScript.deleteStock,

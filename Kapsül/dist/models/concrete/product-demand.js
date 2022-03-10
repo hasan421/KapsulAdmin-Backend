@@ -39,8 +39,8 @@ class ProductDemandModel {
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
-            let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertTeamsProduct, [entity.productId, entity.teamId]);
-            returnObject = getProductDemandResponse;
+            let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertTeamsProduct, [entity.teamId, entity.productId]);
+            returnObject = getProductDemandResponse[0][''];
         }
         catch (error) {
             console.log(error);
@@ -81,6 +81,7 @@ class ProductDemandModel {
             returnObject.setData = saveProductDemandResponse[0][''];
         }
         catch (error) {
+            console.log(error.message);
             returnObject.Result.push(error);
         }
         return returnObject;

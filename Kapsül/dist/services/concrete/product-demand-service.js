@@ -10,6 +10,7 @@ exports.ProductDemandService = void 0;
 const common_1 = require("@nestjs/common");
 const http_error_1 = require("../../core/error/http-error");
 const generic_response_1 = require("../../core/generic-response");
+const product_demand_entity_1 = require("../../entities/product-demand.entity");
 const product_demand_1 = require("../../models/concrete/product-demand");
 const error_message_1 = require("../../utilities/constants/error-message");
 let ProductDemandService = class ProductDemandService {
@@ -35,12 +36,29 @@ let ProductDemandService = class ProductDemandService {
         try {
             returnObject = new generic_response_1.GenericResponse();
             this.productDemandModel = new product_demand_1.ProductDemandModel();
-            let saveProductDemandResponse = await this.productDemandModel.Create(entity);
-            if (!saveProductDemandResponse.getSuccess) {
-                returnObject = saveProductDemandResponse;
+            const asyncResponse = await Promise.all(entity.map(async (item, index) => {
+                let saveProductDemandResponse = await this.productDemandModel.Create(item);
+                if (!saveProductDemandResponse.getSuccess) {
+                    returnObject = saveProductDemandResponse;
+                    return returnObject;
+                }
+                return saveProductDemandResponse;
+            }));
+            if (!asyncResponse) {
+                returnObject.Result.push(new http_error_1.HttpError("İşlem sırasında hata oluştu"));
                 return returnObject;
             }
-            returnObject = saveProductDemandResponse;
+            for (let i = 0; i < asyncResponse.length; i++) {
+                let saveTeamProductDemand = new product_demand_entity_1.ProductDemand();
+                saveTeamProductDemand.productId = asyncResponse[i].getData;
+                console.log(saveTeamProductDemand.productId);
+                saveTeamProductDemand.teamId = entity[i].teamId;
+                let saveTeamProductDemandResponse = await this.productDemandModel.SaveTeamsProductDemand(saveTeamProductDemand);
+                if (!saveTeamProductDemandResponse.getSuccess) {
+                    returnObject.Result = saveTeamProductDemandResponse.Result;
+                    return returnObject;
+                }
+            }
         }
         catch (error) {
             returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));

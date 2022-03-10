@@ -43,16 +43,16 @@ export class ProductDemandModel implements IProductDemandModel {
   }
   async SaveTeamsProductDemand(
     entity: ProductDemand
-  ): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+  ): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
       let queryManager = getManager();
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.insertTeamsProduct,
-        [entity.productId, entity.teamId]
+        [entity.teamId, entity.productId]
       );
-      returnObject = getProductDemandResponse;
+      returnObject = getProductDemandResponse[0][''];
     } catch (error) {
       console.log(error);
       returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
@@ -77,10 +77,10 @@ export class ProductDemandModel implements IProductDemandModel {
     return returnObject;
   }
 
-  async Create(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+  async Create(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
 
       let queryManager = getManager();
       let saveProductDemandResponse = await queryManager.query(
@@ -100,6 +100,7 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = saveProductDemandResponse[0][''];
     } catch (error) {
+      console.log(error.message);
       returnObject.Result.push(error);
     }
     return returnObject;

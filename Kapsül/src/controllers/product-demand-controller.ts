@@ -1,6 +1,6 @@
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Res } from "@nestjs/common";
 import { ProductDemandService } from "src/services/concrete/product-demand-service";
 import { HttpError } from "src/core/error/http-error";
 import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
@@ -11,11 +11,12 @@ export class ProductDemandController {
 
   @Post("save-product-demand")
   async saveProductDemand(
-    @Body() productDemand: ProductDemand
-  ): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
+    @Body() productDemand: ProductDemand[],
+    @Res({ passthrough: true }) response
+  ): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number > = null;
     try {
-      returnObject = new GenericResponse<Number>();
+      returnObject = new GenericResponse<number>();
 
       let saveProductDemandResponse = await this.appService.Create(
         productDemand
@@ -24,17 +25,18 @@ export class ProductDemandController {
         returnObject = saveProductDemandResponse;
         return returnObject;
       }
-
+      response.statusCode = saveProductDemandResponse.Result[0].statusCode;
       returnObject = saveProductDemandResponse;
     } catch (error) {
-     // returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+     returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
     }
 
     return returnObject;
   }
 
   @Get('get-product-demand')
-  async getProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+  async getProductDemand(@Res({ passthrough: true }) response
+  ): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject:GenericResponse<ProductDemand[]> = null
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
@@ -44,6 +46,7 @@ export class ProductDemandController {
         returnObject = getProductDemandResponse; 
         return returnObject;
       }
+      response.statusCode = getProductDemandResponse.Result[0].statusCode;
       returnObject = getProductDemandResponse;
 
     } catch (error) {

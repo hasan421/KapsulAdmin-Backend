@@ -4,6 +4,6 @@ import { ProductDemandService } from "src/services/concrete/product-demand-servi
 export declare class ProductDemandController {
     private readonly appService;
     constructor(appService: ProductDemandService);
-    saveProductDemand(productDemand: ProductDemand): Promise<GenericResponse<Number>>;
-    getProductDemand(): Promise<GenericResponse<ProductDemand[]>>;
+    saveProductDemand(productDemand: ProductDemand[], response: any): Promise<GenericResponse<number>>;
+    getProductDemand(response: any): Promise<GenericResponse<ProductDemand[]>>;
 }
