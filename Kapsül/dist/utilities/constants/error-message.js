@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InternalServerErrorMessages = exports.UnsupportedMediaTypeErrorMessages = exports.NotFoundErrorMessages = exports.MethodNotAllowedMessages = exports.NotAcceptableErrorMessages = exports.ForbiddenErrorMessages = exports.UnauthorizedErrorMessages = exports.BadRequestErrorMessages = void 0;
+exports.SystemErrorMessage = exports.InternalServerErrorMessages = exports.UnsupportedMediaTypeErrorMessages = exports.NotFoundErrorMessages = exports.MethodNotAllowedMessages = exports.NotAcceptableErrorMessages = exports.ForbiddenErrorMessages = exports.UnauthorizedErrorMessages = exports.BadRequestErrorMessages = void 0;
 const BadRequestErrorMessages = {
     BASIC_ERROR: _createBasicError("Bad Request"),
     NonFieldMail: "Mail boş olamaz",
@@ -36,6 +36,10 @@ const InternalServerErrorMessages = {
     BASIC_ERROR: _createBasicError("Internal Server"),
 };
 exports.InternalServerErrorMessages = InternalServerErrorMessages;
+const SystemErrorMessage = {
+    ProcessError: "İşlem sırasında hata oluştu."
+};
+exports.SystemErrorMessage = SystemErrorMessage;
 function _createBasicError(message) {
     return ` ${message} Error`;
 }

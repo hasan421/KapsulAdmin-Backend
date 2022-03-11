@@ -25,4 +25,7 @@ declare const UnsupportedMediaTypeErrorMessages: {
 declare const InternalServerErrorMessages: {
     BASIC_ERROR: string;
 };
-export { BadRequestErrorMessages, UnauthorizedErrorMessages, ForbiddenErrorMessages, NotAcceptableErrorMessages, MethodNotAllowedMessages, NotFoundErrorMessages, UnsupportedMediaTypeErrorMessages, InternalServerErrorMessages, };
+declare const SystemErrorMessage: {
+    ProcessError: string;
+};
+export { BadRequestErrorMessages, UnauthorizedErrorMessages, ForbiddenErrorMessages, NotAcceptableErrorMessages, MethodNotAllowedMessages, NotFoundErrorMessages, UnsupportedMediaTypeErrorMessages, InternalServerErrorMessages, SystemErrorMessage };

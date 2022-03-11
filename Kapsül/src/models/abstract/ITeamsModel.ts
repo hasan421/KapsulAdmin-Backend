@@ -1,0 +1,10 @@
+import { GenericResponse } from "src/core/generic-response";
+import { IRepository } from "src/core/IRepository";
+import { ProductDemand } from "src/entities/product-demand.entity";
+import { Teams } from "src/entities/teams.entity";
+
+export interface ITeams extends IRepository<Teams>{
+    GetTeamsByProductCode(productCode:string):Promise<GenericResponse<string[]>>;
+    GetTeamsName():Promise<GenericResponse<Teams[]>>
+
+}

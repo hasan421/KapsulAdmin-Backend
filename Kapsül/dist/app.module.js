@@ -13,14 +13,16 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const mssql_config_1 = require("./config/mssql-config");
 const product_demand_controller_1 = require("./controllers/product-demand-controller");
+const teams_controller_1 = require("./controllers/teams-controller");
 const product_demand_service_1 = require("./services/concrete/product-demand-service");
+const teams_service_1 = require("./services/concrete/teams-service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forRoot(mssql_config_1.configService.getTypeOrmConfig())],
-        controllers: [app_controller_1.AppController, product_demand_controller_1.ProductDemandController],
-        providers: [app_service_1.AppService, product_demand_service_1.ProductDemandService],
+        controllers: [app_controller_1.AppController, product_demand_controller_1.ProductDemandController, teams_controller_1.TeamsController],
+        providers: [app_service_1.AppService, product_demand_service_1.ProductDemandService, teams_service_1.TeamsService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -3,23 +3,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenericResponse = void 0;
 class GenericResponse {
     constructor() {
+        this.success = true;
         this.Result = [];
     }
     get getData() {
-        return this._data;
+        return this.data;
     }
     set setData(data) {
-        this._data = data;
+        this.data = data;
     }
     get getSuccess() {
         if (this.Result != null && this.Result.length > 0)
-            this._success = false;
+            this.success = false;
         else
-            this._success = true;
-        return this._success;
+            this.success = true;
+        return this.success;
     }
     set setSuccess(success) {
-        this._success = success;
+        this.success = success;
     }
 }
 exports.GenericResponse = GenericResponse;

@@ -32,7 +32,9 @@ const UnsupportedMediaTypeErrorMessages = {
 const InternalServerErrorMessages = {
   BASIC_ERROR: _createBasicError("Internal Server"),
 };
-
+const SystemErrorMessage = {
+  ProcessError : "İşlem sırasında hata oluştu."
+  }
 function _createBasicError(message: string): string {
   return ` ${message} Error`;
 }
@@ -46,4 +48,5 @@ export {
   NotFoundErrorMessages,
   UnsupportedMediaTypeErrorMessages,
   InternalServerErrorMessages,
+  SystemErrorMessage
 };

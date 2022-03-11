@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
-import { ProductDemandModel } from "src/models/concrete/product-demand";
+import { ProductDemandModel } from "src/models/concrete/product-demand-model";
 import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
 import { IProductDemandService } from "../abstract/IProductDemandService";
 @Injectable()

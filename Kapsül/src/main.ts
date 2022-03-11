@@ -1,9 +1,6 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { ProductDemandModel } from "./models/concrete/product-demand";
-import { ProductDemand } from "./entities/product-demand.entity";
-import { Stock } from "./models/concrete/stock";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

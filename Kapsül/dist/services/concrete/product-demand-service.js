@@ -11,14 +11,14 @@ const common_1 = require("@nestjs/common");
 const http_error_1 = require("../../core/error/http-error");
 const generic_response_1 = require("../../core/generic-response");
 const product_demand_entity_1 = require("../../entities/product-demand.entity");
-const product_demand_1 = require("../../models/concrete/product-demand");
+const product_demand_model_1 = require("../../models/concrete/product-demand-model");
 const error_message_1 = require("../../utilities/constants/error-message");
 let ProductDemandService = class ProductDemandService {
     async GetAll() {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
-            this.productDemandModel = new product_demand_1.ProductDemandModel();
+            this.productDemandModel = new product_demand_model_1.ProductDemandModel();
             let getProductDemandResponse = await this.productDemandModel.GetAll();
             if (!getProductDemandResponse.getSuccess) {
                 returnObject = getProductDemandResponse;
@@ -35,7 +35,7 @@ let ProductDemandService = class ProductDemandService {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
-            this.productDemandModel = new product_demand_1.ProductDemandModel();
+            this.productDemandModel = new product_demand_model_1.ProductDemandModel();
             const asyncResponse = await Promise.all(entity.map(async (item, index) => {
                 let saveProductDemandResponse = await this.productDemandModel.Create(item);
                 if (!saveProductDemandResponse.getSuccess) {

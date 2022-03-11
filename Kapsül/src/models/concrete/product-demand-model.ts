@@ -4,62 +4,9 @@ import { ProductDemand } from "../../entities/product-demand.entity";
 import { getManager } from "typeorm";
 import { ProductDemandScript } from "../spscripts/product-demand-script";
 import { HttpError } from "src/core/error/http-error";
-import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
+import { SystemErrorMessage } from "src/utilities/constants/error-message";
 
 export class ProductDemandModel implements IProductDemandModel {
-  async UpdateRecivedProductDemand(
-    entity: ProductDemand
-  ): Promise<GenericResponse<Number>> {
-    let returnObject: GenericResponse<Number> = null;
-    try {
-      returnObject = new GenericResponse<Number>();
-      let queryManager = getManager();
-      let updatePurchedProductResponse = await queryManager.query(
-        ProductDemandScript.updatePurchasedProduct,
-        [entity.productId]
-      );
-      returnObject.setData = updatePurchedProductResponse;
-    } catch (error) {
-      console.log(error);
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
-    }
-    return returnObject;
-
-  }
-  async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
-    let returnObject: GenericResponse<ProductDemand[]> = null;
-    try {
-      returnObject = new GenericResponse<ProductDemand[]>();
-      let queryManager = getManager();
-      let getPurchedProductResponse = await queryManager.query(
-        ProductDemandScript.selectPurchasedProduct
-      );
-      returnObject.setData = getPurchedProductResponse;
-    } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
-    }
-    return returnObject;
-
-  }
-  async SaveTeamsProductDemand(
-    entity: ProductDemand
-  ): Promise<GenericResponse<number>> {
-    let returnObject: GenericResponse<number> = null;
-    try {
-      returnObject = new GenericResponse<number>();
-      let queryManager = getManager();
-      let getProductDemandResponse = await queryManager.query(
-        ProductDemandScript.insertTeamsProduct,
-        [entity.teamId, entity.productId]
-      );
-      returnObject = getProductDemandResponse[0][''];
-    } catch (error) {
-      console.log(error);
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
-    }
-    return returnObject;
-
-  }
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
 
@@ -69,10 +16,10 @@ export class ProductDemandModel implements IProductDemandModel {
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.selectProductDemandScript
       );
-      console.log(getProductDemandResponse);
       returnObject.setData = getProductDemandResponse;
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
     }
     return returnObject;
   }
@@ -100,8 +47,8 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = saveProductDemandResponse[0][''];
     } catch (error) {
-      console.log(error.message);
-      returnObject.Result.push(error);
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
     }
     return returnObject;
   }
@@ -125,11 +72,10 @@ export class ProductDemandModel implements IProductDemandModel {
           entity.productImage
         ]
       );
-
       returnObject.setData = updateProductDemandResponse;
     } catch (error) {
-      console.log(error.message);
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
     }
     return returnObject;
 
@@ -146,7 +92,64 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject.setData = deletePurchedProductResponse;
       return returnObject;
     } catch (error) {
-      returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
     }
+  }
+  async UpdateRecivedProductDemand(
+    entity: ProductDemand
+  ): Promise<GenericResponse<Number>> {
+    let returnObject: GenericResponse<Number> = null;
+    try {
+      returnObject = new GenericResponse<Number>();
+      let queryManager = getManager();
+      let updatePurchedProductResponse = await queryManager.query(
+        ProductDemandScript.updatePurchasedProduct,
+        [entity.productId]
+      );
+      returnObject.setData = updatePurchedProductResponse;
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+
+    return returnObject;
+
+  }
+  async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+    let returnObject: GenericResponse<ProductDemand[]> = null;
+    try {
+      returnObject = new GenericResponse<ProductDemand[]>();
+      let queryManager = getManager();
+      let getPurchedProductResponse = await queryManager.query(
+        ProductDemandScript.selectPurchasedProduct
+      );
+      returnObject.setData = getPurchedProductResponse;
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+
+    return returnObject;
+
+  }
+  async SaveTeamsProductDemand(
+    entity: ProductDemand
+  ): Promise<GenericResponse<number>> {
+    let returnObject: GenericResponse<number> = null;
+    try {
+      returnObject = new GenericResponse<number>();
+      let queryManager = getManager();
+      let getProductDemandResponse = await queryManager.query(
+        ProductDemandScript.insertTeamsProduct,
+        [entity.teamId, entity.productId]
+      );
+      returnObject = getProductDemandResponse[0][''];
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+    return returnObject;
+
   }
 }

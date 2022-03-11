@@ -1,3 +1,4 @@
+import { Teams } from "./teams.entity";
 export declare class ProductDemand {
     productName: string;
     productType?: number;
@@ -18,4 +19,5 @@ export declare class ProductDemand {
     teamId: number;
     stockId: number;
     stockQuantity: number;
+    teamNameList: Teams[];
 }

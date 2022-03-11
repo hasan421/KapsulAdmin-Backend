@@ -1,9 +1,9 @@
 import { HttpError } from "./error/http-error";
 export declare class GenericResponse<T> {
     constructor();
-    private _success;
+    private success;
     Result: Array<HttpError>;
-    private _data;
+    private data;
     get getData(): T;
     set setData(data: T);
     get getSuccess(): boolean;

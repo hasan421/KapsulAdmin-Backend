@@ -1,4 +1,4 @@
-export declare abstract class BaseError extends Error {
+export declare abstract class BaseError {
     message: string;
     constructor(message: string);
 }

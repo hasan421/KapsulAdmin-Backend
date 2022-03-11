@@ -22,37 +22,41 @@ let ProductDemandController = class ProductDemandController {
     constructor(appService) {
         this.appService = appService;
     }
-    async saveProductDemand(productDemand, response) {
+    async SaveProductDemand(productDemand, response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
             let saveProductDemandResponse = await this.appService.Create(productDemand);
             if (!saveProductDemandResponse.getSuccess) {
-                returnObject = saveProductDemandResponse;
+                returnObject.Result.push(...saveProductDemandResponse.Result);
+                returnObject.setSuccess = saveProductDemandResponse.getSuccess;
+                response.statusCode = saveProductDemandResponse.Result[0].statusCode;
                 return returnObject;
             }
-            response.statusCode = saveProductDemandResponse.Result[0].statusCode;
-            returnObject = saveProductDemandResponse;
+            returnObject.setData = saveProductDemandResponse.getData;
         }
         catch (error) {
-            returnObject.Result.push(new http_error_1.HttpError(error_message_1.InternalServerErrorMessages.BASIC_ERROR));
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+            return returnObject;
         }
         return returnObject;
     }
-    async getProductDemand(response) {
+    async GetProductDemand(response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
             let getProductDemandResponse = await this.appService.GetAll();
             if (!getProductDemandResponse.getSuccess) {
-                returnObject = getProductDemandResponse;
+                returnObject.Result.push(...getProductDemandResponse.Result);
+                returnObject.setSuccess = getProductDemandResponse.getSuccess;
+                response.statusCode = getProductDemandResponse.Result[0].statusCode;
                 return returnObject;
             }
-            response.statusCode = getProductDemandResponse.Result[0].statusCode;
-            returnObject = getProductDemandResponse;
+            returnObject.setData = getProductDemandResponse.getData;
         }
         catch (error) {
-            returnObject.Result.push(new http_error_1.HttpError('İşlem sırasında hata oluştu.'));
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+            return returnObject;
         }
         return returnObject;
     }
@@ -64,14 +68,14 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Array, Object]),
     __metadata("design:returntype", Promise)
-], ProductDemandController.prototype, "saveProductDemand", null);
+], ProductDemandController.prototype, "SaveProductDemand", null);
 __decorate([
     (0, common_1.Get)('get-product-demand'),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ProductDemandController.prototype, "getProductDemand", null);
+], ProductDemandController.prototype, "GetProductDemand", null);
 ProductDemandController = __decorate([
     (0, common_1.Controller)("product-demand"),
     __metadata("design:paramtypes", [product_demand_service_1.ProductDemandService])

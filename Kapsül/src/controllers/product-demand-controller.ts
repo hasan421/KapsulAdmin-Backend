@@ -3,14 +3,14 @@ import { ProductDemand } from "src/entities/product-demand.entity";
 import { Body, Controller, Get, Post, Res } from "@nestjs/common";
 import { ProductDemandService } from "src/services/concrete/product-demand-service";
 import { HttpError } from "src/core/error/http-error";
-import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
+import { SystemErrorMessage } from "src/utilities/constants/error-message";
 
 @Controller("product-demand")
 export class ProductDemandController {
   constructor(private readonly appService: ProductDemandService) {}
 
   @Post("save-product-demand")
-  async saveProductDemand(
+  async SaveProductDemand(
     @Body() productDemand: ProductDemand[],
     @Res({ passthrough: true }) response
   ): Promise<GenericResponse<number>> {
@@ -22,20 +22,23 @@ export class ProductDemandController {
         productDemand
       );
       if (!saveProductDemandResponse.getSuccess) {
-        returnObject = saveProductDemandResponse;
+        returnObject.Result.push(...saveProductDemandResponse.Result); 
+        returnObject.setSuccess = saveProductDemandResponse.getSuccess;
+        response.statusCode = saveProductDemandResponse.Result[0].statusCode;
         return returnObject;
       }
-      response.statusCode = saveProductDemandResponse.Result[0].statusCode;
-      returnObject = saveProductDemandResponse;
-    } catch (error) {
-     returnObject.Result.push(new HttpError(InternalServerErrorMessages.BASIC_ERROR));
+      returnObject.setData = saveProductDemandResponse.getData;
+    } 
+    catch (error) {
+     returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+     return returnObject;
     }
 
     return returnObject;
   }
 
   @Get('get-product-demand')
-  async getProductDemand(@Res({ passthrough: true }) response
+  async GetProductDemand(@Res({ passthrough: true }) response
   ): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject:GenericResponse<ProductDemand[]> = null
     try {
@@ -43,16 +46,18 @@ export class ProductDemandController {
       let getProductDemandResponse = await this.appService.GetAll();
       if(!getProductDemandResponse.getSuccess)
       {
-        returnObject = getProductDemandResponse; 
+        returnObject.Result.push(...getProductDemandResponse.Result);
+        returnObject.setSuccess = getProductDemandResponse.getSuccess;
+        response.statusCode = getProductDemandResponse.Result[0].statusCode;
         return returnObject;
       }
-      response.statusCode = getProductDemandResponse.Result[0].statusCode;
-      returnObject = getProductDemandResponse;
+      returnObject.setData = getProductDemandResponse.getData;
 
     } catch (error) {
-      returnObject.Result.push(new HttpError('İşlem sırasında hata oluştu.'))
-      
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
     }
     return returnObject;
   }
+  
 }

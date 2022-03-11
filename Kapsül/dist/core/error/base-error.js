@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseError = void 0;
-class BaseError extends Error {
+class BaseError {
     constructor(message) {
-        super(message);
         this.message = message;
     }
 }

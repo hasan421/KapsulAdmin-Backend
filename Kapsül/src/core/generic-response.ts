@@ -5,25 +5,24 @@ export class GenericResponse<T> {
     this.Result = [];
   }
 
-  private _success: boolean;
+  private success = true;
   public Result: Array<HttpError>;
-  private _data: T;
+  private data: T;
 
   public get getData() {
-    return this._data;
+    return this.data;
   }
 
   public set setData(data: T) {
-    this._data = data;
+    this.data = data;
   }
   public get getSuccess() {
-    if (this.Result != null && this.Result.length > 0) this._success = false;
-    else this._success = true;
-
-    return this._success;
+    if (this.Result != null && this.Result.length > 0) this.success = false;
+    else this.success = true;
+    return this.success;
   }
 
   public set setSuccess(success: boolean) {
-    this._success = success;
+    this.success = success;
   }
 }
