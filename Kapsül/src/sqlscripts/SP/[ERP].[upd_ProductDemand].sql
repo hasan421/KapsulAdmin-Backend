@@ -17,9 +17,6 @@ CREATE PROCEDURE [ERP].[upd_ProductDemand]
     @ProductName VARCHAR(30) ,
     @ProductType TINYINT = NULL,
     @ProductCode VARCHAR(100),
-    @Quantity INT,
-    @QuantityPrice NUMERIC(18,2),
-    @TotalPrice NUMERIC(18,2),
     @ProductLink VARCHAR(500) = NULL,
     @ProductImage VARCHAR (100) = NULL
 )
@@ -30,9 +27,6 @@ UPDATE ERP.ProductDemands
 SET ProductName = @ProductName,
     ProductType = @ProductType,
     ProductCode = @ProductCode,
-    Quantity = @Quantity,
-    QuantityPrice = @QuantityPrice,
-    TotalPrice = @TotalPrice,
     ProductLink = @ProductLink,
     ProductImage = @ProductImage,
     UpdateSystemDate = GETDATE()

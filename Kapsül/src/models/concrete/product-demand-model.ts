@@ -9,6 +9,8 @@ import { SystemErrorMessage } from "src/utilities/constants/error-message";
 export class ProductDemandModel implements IProductDemandModel {
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
+    let productDemand =  null;
+    let productDemandList = new Array<ProductDemand>();
 
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
@@ -16,7 +18,14 @@ export class ProductDemandModel implements IProductDemandModel {
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.selectProductDemandScript
       );
-      returnObject.setData = getProductDemandResponse;
+      for(let i = 0; i< getProductDemandResponse.length ;i++)
+      {   productDemand = new ProductDemandModel();
+           productDemand.productName = getProductDemandResponse[i].ProductName;
+           productDemand.productCode = getProductDemandResponse[i].ProductCode;
+           productDemand.productLink = getProductDemandResponse[i].ProductLink;
+           productDemandList.push(productDemand);
+      }
+      returnObject.setData = productDemandList;
     } catch (error) {
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
       return returnObject;
@@ -36,12 +45,8 @@ export class ProductDemandModel implements IProductDemandModel {
           entity.productName,
           entity.productType,
           entity.productCode,
-          entity.quantity,
-          entity.quantityPrice,
-          entity.totalPrice,
           entity.productLink,
           entity.productImage,
-          entity.recived,
         ]
       );
 
@@ -57,7 +62,6 @@ export class ProductDemandModel implements IProductDemandModel {
     try {
       returnObject = new GenericResponse<Number>();
       let queryManager = getManager();
-      console.log(entity);
       let updateProductDemandResponse = await queryManager.query(
         ProductDemandScript.updateProductDemand,
         [
@@ -142,10 +146,19 @@ export class ProductDemandModel implements IProductDemandModel {
       let queryManager = getManager();
       let getProductDemandResponse = await queryManager.query(
         ProductDemandScript.insertTeamsProduct,
-        [entity.teamId, entity.productId]
+        [
+          entity.teamId, 
+          entity.productId,
+          entity.quantity,
+          entity.quantityPrice,
+          entity.totalPrice,
+          entity.recived
+  
+        ]
       );
-      returnObject = getProductDemandResponse[0][''];
+      returnObject.setData = getProductDemandResponse[0][''];
     } catch (error) {
+      console.log(error.message);
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
       return returnObject;
     }

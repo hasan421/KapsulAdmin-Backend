@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Post, Res } from "@nestjs/common";
-import { response } from "express";
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
 import { Teams } from "src/entities/teams.entity";
 import { TeamsService } from "src/services/concrete/teams-service";
-import { InternalServerErrorMessages, SystemErrorMessage } from "src/utilities/constants/error-message";
+import { SystemErrorMessage } from "src/utilities/constants/error-message";
 
 @Controller("teams")
 export class TeamsController {
@@ -14,10 +13,10 @@ export class TeamsController {
   async GetTeamsNameByProductCode(
     @Body() entity: ProductDemand,
     @Res({ passthrough: true }) response
-  ): Promise<GenericResponse<string[]>> {
-    let returnObject: GenericResponse<string[]> = null;
+  ): Promise<GenericResponse<Teams[]>> {
+    let returnObject: GenericResponse<Teams[]> = null;
     try {
-      returnObject = new GenericResponse<string[]>();
+      returnObject = new GenericResponse<Teams[]>();
       let getTeamsNameByProductCodeResponse =
         await this.teamService.GetTeamsByProductCode(entity.productCode);
       if (!getTeamsNameByProductCodeResponse.getSuccess) {

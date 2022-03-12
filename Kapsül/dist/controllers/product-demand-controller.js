@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductDemandController = void 0;
 const generic_response_1 = require("../core/generic-response");
+const product_demand_entity_1 = require("../entities/product-demand.entity");
 const common_1 = require("@nestjs/common");
 const product_demand_service_1 = require("../services/concrete/product-demand-service");
 const http_error_1 = require("../core/error/http-error");
@@ -66,7 +67,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Object]),
+    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "SaveProductDemand", null);
 __decorate([

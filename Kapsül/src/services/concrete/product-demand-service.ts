@@ -1,17 +1,23 @@
-import { Injectable } from "@nestjs/common";
+import { HostParam, Injectable } from "@nestjs/common";
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
+import { CalculaterTotalPrice, CalculaterTotalProductQuantity, CalculaterTotalProductQuantityPrice } from "src/helper/product-quantity-calculater";
 import { ProductDemandModel } from "src/models/concrete/product-demand-model";
-import { InternalServerErrorMessages } from "src/utilities/constants/error-message";
+import { TeamsModel } from "src/models/concrete/teams-model";
+import { SystemErrorMessage } from "src/utilities/constants/error-message";
 import { IProductDemandService } from "../abstract/IProductDemandService";
 @Injectable()
 export class ProductDemandService implements IProductDemandService {
+ 
   private productDemandModel: ProductDemandModel;
+  private teamsModel: TeamsModel;
+
 
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
-
+    let productDemand = new ProductDemand();
+     let productDemandList = Array<ProductDemand>();
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
 
@@ -19,62 +25,85 @@ export class ProductDemandService implements IProductDemandService {
       let getProductDemandResponse = await this.productDemandModel.GetAll();
 
       if (!getProductDemandResponse.getSuccess) {
-        returnObject = getProductDemandResponse;
+        returnObject.Result.push(...getProductDemandResponse.Result);
+        returnObject.setSuccess = getProductDemandResponse.setSuccess;
         return returnObject;
       }
-      returnObject = getProductDemandResponse;
+      if(!getProductDemandResponse && !getProductDemandResponse.getData)
+      {
+        returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError))
+      }
+      for(let i = 0 ; i < getProductDemandResponse.getData.length; i++)
+      {      this.teamsModel = new TeamsModel();
+
+        let getTeams = await this.teamsModel.GetTeamsByProductCode(getProductDemandResponse.getData[i].productCode);
+        if(!getTeams.getSuccess)
+        {
+          returnObject.Result.push(...getProductDemandResponse.Result);
+          returnObject.setSuccess = getProductDemandResponse.setSuccess;
+          return returnObject;
+        }
+        productDemand.productName = getProductDemandResponse.getData[i]?.productName;
+        productDemand.productCode = getProductDemandResponse.getData[i]?.productCode;
+        productDemand.productLink = getProductDemandResponse.getData[i]?.productLink;
+        productDemand.quantity = CalculaterTotalProductQuantity(getTeams.getData);
+        productDemand.quantityPrice = getTeams.getData[0].quantityPrice;
+        productDemand.totalPrice = CalculaterTotalPrice(getTeams.getData);
+        productDemand.teamNameList = [];
+        productDemand.teamNameList.push(...getTeams.getData)
+        productDemandList.push(productDemand);
+      }
+      returnObject.setData = productDemandList;
     } catch (error) {
+      console.log(error.message);
       returnObject.Result.push(
-        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+        new HttpError(SystemErrorMessage.ProcessError)
       );
+      return returnObject;
     }
 
     return returnObject;
   }
 
   async Create(
-    entity: ProductDemand[]
+    entity: ProductDemand
   ): Promise<GenericResponse<number>> {
     let returnObject: GenericResponse<number> = null;
     try {
       returnObject = new GenericResponse<number>();
       this.productDemandModel = new ProductDemandModel();
-      const asyncResponse = await Promise.all(
-        entity.map(async (item: ProductDemand, index: number) => {
-          let saveProductDemandResponse = await this.productDemandModel.Create(
-            item
-          );
-          if (!saveProductDemandResponse.getSuccess) {
-            returnObject = saveProductDemandResponse;
-            return returnObject;
-          }
-          return saveProductDemandResponse;
-        })
-      );
-      if (!asyncResponse) {
-        returnObject.Result.push(new HttpError("İşlem sırasında hata oluştu"));
+      let saveProductDemandResponse = await this.productDemandModel.Create(entity);
+      if (!saveProductDemandResponse.getSuccess) {
+        returnObject.Result.push(...saveProductDemandResponse.Result);
+        returnObject.setSuccess = saveProductDemandResponse.getSuccess;
         return returnObject;
       }
-      for (let i: number = 0; i < asyncResponse.length; i++) {
+      for (let i: number = 0; i < entity.teamNameList.length; i++) {
+      
         let saveTeamProductDemand = new ProductDemand();
-        saveTeamProductDemand.productId = asyncResponse[i].getData;
-        console.log(saveTeamProductDemand.productId);
-        saveTeamProductDemand.teamId = entity[i].teamId;
-        let saveTeamProductDemandResponse =
+        saveTeamProductDemand.productId = saveProductDemandResponse.getData;
+        saveTeamProductDemand.teamId = entity.teamNameList[i].teamId;
+        saveTeamProductDemand.quantity = entity.teamNameList[i].quantity;
+        saveTeamProductDemand.quantityPrice = entity.quantityPrice;
+        saveTeamProductDemand.totalPrice =  CalculaterTotalProductQuantityPrice(entity.teamNameList[i].quantity,entity.quantityPrice);
+        saveTeamProductDemand.recived = 0 ;
+        let saveTeamProductDemandResponse = 
           await this.productDemandModel.SaveTeamsProductDemand(
             saveTeamProductDemand
           );
         if (!saveTeamProductDemandResponse.getSuccess) {
-          returnObject.Result = saveTeamProductDemandResponse.Result;
+          returnObject.Result.push(...saveTeamProductDemandResponse.Result);
+          returnObject.setSuccess = saveTeamProductDemandResponse.getSuccess;
           return returnObject;
         }
       }
     } catch (error) {
       returnObject.Result.push(
-        new HttpError(InternalServerErrorMessages.BASIC_ERROR)
+        new HttpError(SystemErrorMessage.ProcessError)
       );
+      return returnObject;
     }
- return returnObject
+ return returnObject;
   }
   Update(entity: ProductDemand): Promise<GenericResponse<Number>> {
     throw new Error("Method not implemented.");
@@ -82,4 +111,12 @@ export class ProductDemandService implements IProductDemandService {
   Delete(entity: ProductDemand): Promise<GenericResponse<Number>> {
     throw new Error("Method not implemented.");
   }
+  
+  GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+    throw new Error("Method not implemented.");
+  }
+  UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<Number>> {
+    throw new Error("Method not implemented.");
+  }
 }
+

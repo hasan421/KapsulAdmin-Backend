@@ -1,5 +1,6 @@
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
+import { ProductDemand } from "src/entities/product-demand.entity";
 import { Teams } from "src/entities/teams.entity";
 import {  SystemErrorMessage } from "src/utilities/constants/error-message";
 import { getManager } from "typeorm";
@@ -35,17 +36,29 @@ export class TeamsModel implements ITeams{
         }
         return returnObject;
     }
-   async GetTeamsByProductCode(productCode: string): Promise<GenericResponse<string[]>> {
-        let returnObject: GenericResponse<string[]> = null;
+   async GetTeamsByProductCode(productCode: string): Promise<GenericResponse<Teams[]>> {
+        let returnObject: GenericResponse<Teams[]> = null;
+        let teams = null;
+        let teamsList = new Array<Teams>();
         try {
-          returnObject = new GenericResponse<string[]>();
+          returnObject = new GenericResponse<Teams[]>();
           let queryManager = getManager();
           let getTeamsByProductCodeResponse = await queryManager.query(
             TeamsScript.selectTeamsByProductCode,
             [productCode]
           );
-          returnObject.setData = getTeamsByProductCodeResponse;
+          for(let i = 0; i < getTeamsByProductCodeResponse.length ;i++)
+          {    teams = new Teams();
+               teams.teamName = getTeamsByProductCodeResponse[i].TeamName;
+               teams.quantity = getTeamsByProductCodeResponse[i].Quantity;
+               teams.quantityPrice = getTeamsByProductCodeResponse[i].QuantityPrice;
+               teams.totalPrice = getTeamsByProductCodeResponse[i].TotalPrice
+               console.log(teams);
+               teamsList.push(teams);
+          }
+          returnObject.setData = teamsList;
         } catch (error) {
+          console.log(error.message);
           returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
          return returnObject
         }

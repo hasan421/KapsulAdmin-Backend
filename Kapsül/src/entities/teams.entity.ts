@@ -1,4 +1,5 @@
-export class Teams{
+export class Teams
+{
     teamId:number
     teamName:string 
     establishmentDate:Date
@@ -7,9 +8,11 @@ export class Teams{
     teamMail:string
     teamPhone:string 
     advisorId:number
+    quantity:number
+    quantityPrice:number
+    totalPrice:number
     affiliatedInstitutionId:number
     isDeleted:number
     systemDate:Date
     updateSystemDate:Date
-
 }

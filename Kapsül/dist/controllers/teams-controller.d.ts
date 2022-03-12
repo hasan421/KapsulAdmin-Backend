@@ -5,6 +5,6 @@ import { TeamsService } from "src/services/concrete/teams-service";
 export declare class TeamsController {
     private readonly teamService;
     constructor(teamService: TeamsService);
-    GetTeamsNameByProductCode(entity: ProductDemand, response: any): Promise<GenericResponse<string[]>>;
+    GetTeamsNameByProductCode(entity: ProductDemand, response: any): Promise<GenericResponse<Teams[]>>;
     GetTeamsName(response: any): Promise<GenericResponse<Teams[]>>;
 }

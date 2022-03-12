@@ -16,12 +16,8 @@ CREATE PROCEDURE [ERP].[ins_ProductDemands]
     @ProductName VARCHAR(30),
     @ProductType TINYINT = NULL,
     @ProductCode VARCHAR(100),
-    @Quantity INT,
-    @QuantityPrice NUMERIC(18,2),
-    @TotalPrice NUMERIC(18,2),
     @ProductLink VARCHAR(500) = NULL,
-    @ProductImage VARCHAR(100) = NULL,
-    @Recived TINYINT
+    @ProductImage VARCHAR(100) = NULL
 
 )
 AS
@@ -33,12 +29,8 @@ INSERT INTO [ERP].[ProductDemands]
     ProductName,
     ProductType,
     ProductCode,
-    Quantity ,
-    QuantityPrice,
-    TotalPrice,
     ProductLink,
     ProductImage,
-    Recived,
     SystemDate
 
 )
@@ -47,12 +39,8 @@ VALUES
     @ProductName,
     @ProductType,
     @ProductCode,
-    @Quantity,
-    @QuantityPrice,
-    @TotalPrice,
     @ProductLink,
     @ProductImage,
-    @Recived,
     GETDATE()
 )
 SELECT CAST(SCOPE_IDENTITY() AS INT)

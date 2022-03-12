@@ -27,5 +27,5 @@ ON TP.TeamId = TS.TeamId
 INNER JOIN ERP.ProductDemands PS WITH (NOLOCK) 
 ON PS.ProductId = TP.ProductId 
 WHERE PS.ProductCode = @ProductCode AND  
-      PS.Recived = 0 AND PS.IsDeleted = 0
+      TP.Recived = 0 AND TP.IsDeleted = 0
 END

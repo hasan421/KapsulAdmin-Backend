@@ -9,11 +9,20 @@ const error_message_1 = require("../../utilities/constants/error-message");
 class ProductDemandModel {
     async GetAll() {
         let returnObject = null;
+        let productDemand = null;
+        let productDemandList = new Array();
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
             let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.selectProductDemandScript);
-            returnObject.setData = getProductDemandResponse;
+            for (let i = 0; i < getProductDemandResponse.length; i++) {
+                productDemand = new ProductDemandModel();
+                productDemand.productName = getProductDemandResponse[i].ProductName;
+                productDemand.productCode = getProductDemandResponse[i].ProductCode;
+                productDemand.productLink = getProductDemandResponse[i].ProductLink;
+                productDemandList.push(productDemand);
+            }
+            returnObject.setData = productDemandList;
         }
         catch (error) {
             returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
@@ -30,12 +39,8 @@ class ProductDemandModel {
                 entity.productName,
                 entity.productType,
                 entity.productCode,
-                entity.quantity,
-                entity.quantityPrice,
-                entity.totalPrice,
                 entity.productLink,
                 entity.productImage,
-                entity.recived,
             ]);
             returnObject.setData = saveProductDemandResponse[0][''];
         }
@@ -50,7 +55,6 @@ class ProductDemandModel {
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
-            console.log(entity);
             let updateProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.updateProductDemand, [
                 entity.productId,
                 entity.productName,
@@ -117,10 +121,18 @@ class ProductDemandModel {
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
-            let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertTeamsProduct, [entity.teamId, entity.productId]);
-            returnObject = getProductDemandResponse[0][''];
+            let getProductDemandResponse = await queryManager.query(product_demand_script_1.ProductDemandScript.insertTeamsProduct, [
+                entity.teamId,
+                entity.productId,
+                entity.quantity,
+                entity.quantityPrice,
+                entity.totalPrice,
+                entity.recived
+            ]);
+            returnObject.setData = getProductDemandResponse[0][''];
         }
         catch (error) {
+            console.log(error.message);
             returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
             return returnObject;
         }

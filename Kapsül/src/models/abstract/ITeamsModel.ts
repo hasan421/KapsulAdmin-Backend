@@ -4,7 +4,7 @@ import { ProductDemand } from "src/entities/product-demand.entity";
 import { Teams } from "src/entities/teams.entity";
 
 export interface ITeams extends IRepository<Teams>{
-    GetTeamsByProductCode(productCode:string):Promise<GenericResponse<string[]>>;
+    GetTeamsByProductCode(productCode:string):Promise<GenericResponse<Teams[]>>;
     GetTeamsName():Promise<GenericResponse<Teams[]>>
 
 }

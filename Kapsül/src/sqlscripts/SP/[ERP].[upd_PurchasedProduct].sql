@@ -18,7 +18,7 @@ CREATE PROCEDURE [ERP].[upd_PurchasedProduct]
 AS
 SET NOCOUNT ON
 BEGIN
-UPDATE ERP.ProductDemands  
+UPDATE ERP.TeamsProductDemands 
 SET Recived = 1
 WHERE ProductId = @ProductId
 

@@ -7,6 +7,9 @@ export declare class Teams {
     teamMail: string;
     teamPhone: string;
     advisorId: number;
+    quantity: number;
+    quantityPrice: number;
+    totalPrice: number;
     affiliatedInstitutionId: number;
     isDeleted: number;
     systemDate: Date;

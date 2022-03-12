@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
+import { ProductDemand } from "src/entities/product-demand.entity";
 import { Teams } from "src/entities/teams.entity";
 import { TeamsModel } from "src/models/concrete/teams-model";
-import { InternalServerErrorMessages, SystemErrorMessage } from "src/utilities/constants/error-message";
+import { SystemErrorMessage } from "src/utilities/constants/error-message";
 import { ITeamsService } from "../abstract/ITeamsService";
 @Injectable()
 export class TeamsService implements ITeamsService {
@@ -23,10 +24,10 @@ export class TeamsService implements ITeamsService {
   }
   async GetTeamsByProductCode(
     productCode: string
-  ): Promise<GenericResponse<string[]>> {
-    let returnObject: GenericResponse<string[]> = null;
+  ): Promise<GenericResponse<Teams[]>> {
+    let returnObject: GenericResponse<Teams[]> = null;
     try {
-      returnObject = new GenericResponse<string[]>();
+      returnObject = new GenericResponse<Teams[]>();
       this.teamsemandModel = new TeamsModel();
       let getTeamsNameByProductCodeResponse =
         await this.teamsemandModel.GetTeamsByProductCode(productCode);

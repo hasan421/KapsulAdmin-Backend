@@ -7,5 +7,5 @@ export declare class TeamsModel implements ITeams {
     Update(entity: Teams): Promise<GenericResponse<Number>>;
     Delete(entity: Teams): Promise<GenericResponse<Number>>;
     GetTeamsName(): Promise<GenericResponse<Teams[]>>;
-    GetTeamsByProductCode(productCode: string): Promise<GenericResponse<string[]>>;
+    GetTeamsByProductCode(productCode: string): Promise<GenericResponse<Teams[]>>;
 }

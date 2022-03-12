@@ -7,6 +7,6 @@ export declare class TeamsService implements ITeamsService {
     Create(entity: Teams | Teams[]): Promise<GenericResponse<number>>;
     Update(entity: Teams): Promise<GenericResponse<Number>>;
     Delete(entity: Teams): Promise<GenericResponse<Number>>;
-    GetTeamsByProductCode(productCode: string): Promise<GenericResponse<string[]>>;
+    GetTeamsByProductCode(productCode: string): Promise<GenericResponse<Teams[]>>;
     GetTeamsName(): Promise<GenericResponse<Teams[]>>;
 }

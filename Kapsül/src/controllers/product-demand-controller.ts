@@ -11,7 +11,7 @@ export class ProductDemandController {
 
   @Post("save-product-demand")
   async SaveProductDemand(
-    @Body() productDemand: ProductDemand[],
+    @Body() productDemand: ProductDemand,
     @Res({ passthrough: true }) response
   ): Promise<GenericResponse<number>> {
     let returnObject: GenericResponse<number > = null;

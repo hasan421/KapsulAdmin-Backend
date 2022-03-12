@@ -14,7 +14,10 @@ Last Modification Date:
 CREATE PROCEDURE [ERP].[ins_TeamsProductDemands]
 (
     @TeamId INT,
-    @ProductId INT
+    @ProductId INT,    
+    @Quantity INT,
+    @QuantityPrice NUMERIC(18,2),
+    @TotalPrice NUMERIC(18,2)
   
 )
 AS
@@ -25,6 +28,9 @@ INSERT INTO [ERP].[TeamsProductDemands]
 (
    ProductId,
    TeamId,
+   Quantity,
+   QuantityPrice,
+   TotalPrice,
    SystemDate
 
 )
@@ -32,6 +38,9 @@ VALUES
 (
     @ProductId,
     @TeamId,
+    @Quantity,
+    @QuantityPrice,
+    @TotalPrice,
     GETDATE()
 )
 SELECT CAST(SCOPE_IDENTITY() AS INT)
