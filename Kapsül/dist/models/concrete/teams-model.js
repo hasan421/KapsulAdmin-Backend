@@ -25,8 +25,8 @@ class TeamsModel {
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
-            let getTeamsNameResponse = await queryManager.query(teams_script_1.TeamsScript.selectTeamsName);
-            returnObject.setData = getTeamsNameResponse;
+            let responseGetTeamsName = await queryManager.query(teams_script_1.TeamsScript.selectTeamsName);
+            returnObject.setData = responseGetTeamsName;
         }
         catch (error) {
             returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
@@ -41,15 +41,15 @@ class TeamsModel {
         try {
             returnObject = new generic_response_1.GenericResponse();
             let queryManager = (0, typeorm_1.getManager)();
-            let getTeamsByProductCodeResponse = await queryManager.query(teams_script_1.TeamsScript.selectTeamsByProductCode, [productCode]);
-            for (let i = 0; i < getTeamsByProductCodeResponse.length; i++) {
-                teams = new teams_entity_1.Teams();
-                teams.teamName = getTeamsByProductCodeResponse[i].TeamName;
-                teams.quantity = getTeamsByProductCodeResponse[i].Quantity;
-                teams.quantityPrice = getTeamsByProductCodeResponse[i].QuantityPrice;
-                teams.totalPrice = getTeamsByProductCodeResponse[i].TotalPrice;
-                console.log(teams);
-                teamsList.push(teams);
+            let responseGetTeamsByProductCodeResponse = await queryManager.query(teams_script_1.TeamsScript.selectTeamsByProductCode, [productCode]);
+            if (responseGetTeamsByProductCodeResponse) {
+                for (let i = 0; i < responseGetTeamsByProductCodeResponse.length; i++) {
+                    teams = new teams_entity_1.Teams();
+                    teams.teamProductDemandId = responseGetTeamsByProductCodeResponse[i].TeamProductDemandId;
+                    teams.teamName = responseGetTeamsByProductCodeResponse[i].TeamName;
+                    teams.quantity = responseGetTeamsByProductCodeResponse[i].Quantity;
+                    teamsList.push(teams);
+                }
             }
             returnObject.setData = teamsList;
         }

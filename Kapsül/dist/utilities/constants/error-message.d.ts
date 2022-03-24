@@ -1,8 +1,6 @@
 declare const BadRequestErrorMessages: {
     BASIC_ERROR: string;
-    NonFieldMail: string;
-    hasanaselam: string;
-    emptyMail: string;
+    SameContentError: string;
 };
 declare const UnauthorizedErrorMessages: {
     BASIC_ERROR: string;

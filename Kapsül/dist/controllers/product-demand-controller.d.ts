@@ -4,6 +4,10 @@ import { ProductDemandService } from "src/services/concrete/product-demand-servi
 export declare class ProductDemandController {
     private readonly appService;
     constructor(appService: ProductDemandService);
-    SaveProductDemand(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
-    GetProductDemand(response: any): Promise<GenericResponse<ProductDemand[]>>;
+    SaveProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
+    GetProductDemandController(response: any): Promise<GenericResponse<ProductDemand[]>>;
+    DeleteProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
+    UpdateTeamProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
+    GetPurchasedProductDemandController(response: any): Promise<GenericResponse<ProductDemand[]>>;
+    UpdateRecivedProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
 }

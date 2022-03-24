@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -26,3 +25,4 @@ INNER JOIN ERP.ProductDemands PS WITH (NOLOCK)
 ON PS.ProductId = SC.ProductId
 WHERE PS.ProductCode = @ProductCode
 END
+GO

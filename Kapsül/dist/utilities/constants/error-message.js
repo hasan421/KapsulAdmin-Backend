@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SystemErrorMessage = exports.InternalServerErrorMessages = exports.UnsupportedMediaTypeErrorMessages = exports.NotFoundErrorMessages = exports.MethodNotAllowedMessages = exports.NotAcceptableErrorMessages = exports.ForbiddenErrorMessages = exports.UnauthorizedErrorMessages = exports.BadRequestErrorMessages = void 0;
 const BadRequestErrorMessages = {
     BASIC_ERROR: _createBasicError("Bad Request"),
-    NonFieldMail: "Mail boş olamaz",
-    hasanaselam: "selam hasan",
-    emptyMail: "mail boş olamaz",
+    SameContentError: _createBasicError("Aynı ürün coduna sahip ürün olduğu için ekleyemezsiniz.")
 };
 exports.BadRequestErrorMessages = BadRequestErrorMessages;
 const UnauthorizedErrorMessages = {

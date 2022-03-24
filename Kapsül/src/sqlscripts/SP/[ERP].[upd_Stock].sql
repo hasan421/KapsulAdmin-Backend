@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -32,3 +31,4 @@ SET ProductId = @ProductId,
 WHERE ProductId = @ProductId
 
 END
+GO

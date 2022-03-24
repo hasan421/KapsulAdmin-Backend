@@ -1,11 +1,23 @@
 import { HttpError } from "./error/http-error";
+import { SuccessMessage } from "./success-message";
 
 export class GenericResponse<T> {
   constructor() {
     this.Result = [];
+    this.successMessage = null;
+
+  }
+  private success = true;
+ private _successMessage: SuccessMessage;
+  public get successMessage(): SuccessMessage {
+   return this._successMessage
+  }
+  public set successMessage(value: SuccessMessage) {
+    if(this.Result != null && this.Result.length > 0)this._successMessage = null 
+    else this._successMessage = new SuccessMessage();
   }
 
-  private success = true;
+  
   public Result: Array<HttpError>;
   private data: T;
 

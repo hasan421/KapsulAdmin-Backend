@@ -23,7 +23,8 @@ let ProductDemandController = class ProductDemandController {
     constructor(appService) {
         this.appService = appService;
     }
-    async SaveProductDemand(productDemand, response) {
+    async SaveProductDemandController(productDemand, response) {
+        var _a;
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
@@ -31,7 +32,8 @@ let ProductDemandController = class ProductDemandController {
             if (!saveProductDemandResponse.getSuccess) {
                 returnObject.Result.push(...saveProductDemandResponse.Result);
                 returnObject.setSuccess = saveProductDemandResponse.getSuccess;
-                response.statusCode = saveProductDemandResponse.Result[0].statusCode;
+                response.statusCode = (_a = saveProductDemandResponse.Result[0]) === null || _a === void 0 ? void 0 : _a.statusCode;
+                returnObject.successMessage = saveProductDemandResponse.successMessage;
                 return returnObject;
             }
             returnObject.setData = saveProductDemandResponse.getData;
@@ -42,7 +44,7 @@ let ProductDemandController = class ProductDemandController {
         }
         return returnObject;
     }
-    async GetProductDemand(response) {
+    async GetProductDemandController(response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
@@ -61,6 +63,69 @@ let ProductDemandController = class ProductDemandController {
         }
         return returnObject;
     }
+    async DeleteProductDemandController(productDemand, response) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let responseDeleteProduct = await this.appService.Delete(productDemand);
+            if (!responseDeleteProduct.getSuccess) {
+                returnObject.Result.push(...responseDeleteProduct.Result);
+                returnObject.setSuccess = responseDeleteProduct.getSuccess;
+            }
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+        }
+        return returnObject;
+    }
+    async UpdateTeamProductDemandController(productDemand = null, response) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let responseUpdateTeamProduct = await this.appService.Update(productDemand);
+            if (!responseUpdateTeamProduct.getSuccess) {
+                returnObject.Result.push(...responseUpdateTeamProduct.Result);
+                returnObject.setSuccess = responseUpdateTeamProduct.getSuccess;
+                returnObject.successMessage = responseUpdateTeamProduct.successMessage;
+            }
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+        }
+        return returnObject;
+    }
+    async GetPurchasedProductDemandController(response) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let responseGetPurchasedProductDemand = await this.appService.GetPurchasedProductDemand();
+            if (!responseGetPurchasedProductDemand.getSuccess) {
+                returnObject.Result.push(...responseGetPurchasedProductDemand.Result);
+                returnObject.setSuccess = responseGetPurchasedProductDemand.getSuccess;
+                returnObject.successMessage = responseGetPurchasedProductDemand.successMessage;
+            }
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+        }
+        return returnObject;
+    }
+    async UpdateRecivedProductDemandController(productDemand = null, response) {
+        let returnObject = null;
+        try {
+            returnObject = new generic_response_1.GenericResponse();
+            let responseUpdateRecivedroduct = await this.appService.UpdateRecivedProductDemand(productDemand);
+            if (!responseUpdateRecivedroduct.getSuccess) {
+                returnObject.Result.push(...responseUpdateRecivedroduct.Result);
+                returnObject.setSuccess = responseUpdateRecivedroduct.getSuccess;
+                returnObject.successMessage = responseUpdateRecivedroduct.successMessage;
+            }
+        }
+        catch (error) {
+            returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+        }
+        return returnObject;
+    }
 };
 __decorate([
     (0, common_1.Post)("save-product-demand"),
@@ -69,14 +134,45 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
     __metadata("design:returntype", Promise)
-], ProductDemandController.prototype, "SaveProductDemand", null);
+], ProductDemandController.prototype, "SaveProductDemandController", null);
 __decorate([
-    (0, common_1.Get)('get-product-demand'),
+    (0, common_1.Get)("get-product-demand"),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ProductDemandController.prototype, "GetProductDemand", null);
+], ProductDemandController.prototype, "GetProductDemandController", null);
+__decorate([
+    (0, common_1.Post)("delete-product-demand"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
+    __metadata("design:returntype", Promise)
+], ProductDemandController.prototype, "DeleteProductDemandController", null);
+__decorate([
+    (0, common_1.Post)("update-product-demand"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
+    __metadata("design:returntype", Promise)
+], ProductDemandController.prototype, "UpdateTeamProductDemandController", null);
+__decorate([
+    (0, common_1.Get)("get-purchased-product-demand"),
+    __param(0, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductDemandController.prototype, "GetPurchasedProductDemandController", null);
+__decorate([
+    (0, common_1.Post)("update-recived-product-demand"),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
+    __metadata("design:returntype", Promise)
+], ProductDemandController.prototype, "UpdateRecivedProductDemandController", null);
 ProductDemandController = __decorate([
     (0, common_1.Controller)("product-demand"),
     __metadata("design:paramtypes", [product_demand_service_1.ProductDemandService])
