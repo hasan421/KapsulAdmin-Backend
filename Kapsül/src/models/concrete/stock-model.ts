@@ -16,6 +16,10 @@ export class Stock implements IStock {
       let getStockResponse = await queryManager.query(StockScript.selectStock);
       returnObject.setData = getStockResponse;
 
+      
+
+
+
     } catch (error) {
       console.log(error.message);
       returnObject.Result.push(

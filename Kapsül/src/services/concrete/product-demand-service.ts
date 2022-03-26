@@ -1,11 +1,12 @@
-import { HostParam, Injectable } from "@nestjs/common";
-import { HttpError } from "src/core/error/http-error";
+import { Injectable } from "@nestjs/common";
+import { BadRequestError, HttpError } from "src/core/error/http-error";
 import { GenericResponse } from "src/core/generic-response";
 import { ProductDemand } from "src/entities/product-demand.entity";
-import { CalculaterTotalPrice, CalculaterTotalProductQuantity, CalculaterTotalProductQuantityPrice } from "src/helper/product-quantity-calculater";
+import { CalculaterTotalProductQuantityPrice } from "src/helper/product-quantity-calculater";
 import { ProductDemandModel } from "src/models/concrete/product-demand-model";
 import { TeamsModel } from "src/models/concrete/teams-model";
 import { SystemErrorMessage } from "src/utilities/constants/error-message";
+import { TransactionType } from "src/utilities/enums/transaction-type";
 import { IProductDemandService } from "../abstract/IProductDemandService";
 @Injectable()
 export class ProductDemandService implements IProductDemandService {
@@ -16,46 +17,65 @@ export class ProductDemandService implements IProductDemandService {
 
   async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
-    let productDemand = new ProductDemand();
-     let productDemandList = Array<ProductDemand>();
+    let productDemand:ProductDemand = null;
+    let productDemandList = Array<ProductDemand>();
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
 
       this.productDemandModel = new ProductDemandModel();
-      let getProductDemandResponse = await this.productDemandModel.GetAll();
+      let responseGetProductDemand = await this.productDemandModel.GetAll();
 
-      if (!getProductDemandResponse.getSuccess) {
-        returnObject.Result.push(...getProductDemandResponse.Result);
-        returnObject.setSuccess = getProductDemandResponse.setSuccess;
+      if (!responseGetProductDemand.getSuccess) {
+        returnObject.Result.push(...responseGetProductDemand.Result);
+        returnObject.setSuccess = responseGetProductDemand.setSuccess;
+        returnObject.successMessage = responseGetProductDemand.successMessage;
         return returnObject;
       }
-      if(!getProductDemandResponse && !getProductDemandResponse.getData)
+      if(!responseGetProductDemand && !responseGetProductDemand.getData)
       {
         returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError))
       }
-      for(let i = 0 ; i < getProductDemandResponse.getData.length; i++)
-      {      this.teamsModel = new TeamsModel();
+      for(let i = 0 ; i < responseGetProductDemand.getData.length; i++)
+      {     
+        let responseProductQuantity = await this.productDemandModel.
+                                      GetProductTotalQuantityAndTotalPrice(responseGetProductDemand.getData[i]); 
+        if(!responseProductQuantity.getSuccess) 
+        { 
+          returnObject.Result.push(...responseProductQuantity.Result); 
+          returnObject.setSuccess = responseProductQuantity.getSuccess; 
+          returnObject.successMessage = responseProductQuantity.successMessage;
 
-        let getTeams = await this.teamsModel.GetTeamsByProductCode(getProductDemandResponse.getData[i].productCode);
-        if(!getTeams.getSuccess)
+        } 
+        
+        if(!responseProductQuantity && !responseProductQuantity.getData) 
+        { 
+          returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError)) 
+
+        }
+        this.teamsModel = new TeamsModel();
+        let responseGetTeams = await this.teamsModel.GetTeamsByProductCode(responseGetProductDemand.getData[i].productCode);
+        if(!responseGetTeams.getSuccess)
         {
-          returnObject.Result.push(...getProductDemandResponse.Result);
-          returnObject.setSuccess = getProductDemandResponse.setSuccess;
+          returnObject.Result.push(...responseGetTeams.Result);
+          returnObject.setSuccess = responseGetTeams.setSuccess;
+          returnObject.successMessage = responseGetTeams.successMessage;
+
           return returnObject;
         }
-        productDemand.productName = getProductDemandResponse.getData[i]?.productName;
-        productDemand.productCode = getProductDemandResponse.getData[i]?.productCode;
-        productDemand.productLink = getProductDemandResponse.getData[i]?.productLink;
-        productDemand.quantity = CalculaterTotalProductQuantity(getTeams.getData);
-        productDemand.quantityPrice = getTeams.getData[0].quantityPrice;
-        productDemand.totalPrice = CalculaterTotalPrice(getTeams.getData);
+        productDemand = new ProductDemand();
+        productDemand.productId = responseGetProductDemand.getData[i]?.productId;
+        productDemand.productName = responseGetProductDemand.getData[i]?.productName;
+        productDemand.productCode = responseGetProductDemand.getData[i]?.productCode;
+        productDemand.productLink = responseGetProductDemand.getData[i]?.productLink;
+        productDemand.quantity = responseProductQuantity.getData?.quantity;
+        productDemand.quantityPrice = responseProductQuantity.getData?.quantityPrice;
+        productDemand.totalPrice = responseProductQuantity.getData?.totalPrice;
         productDemand.teamNameList = [];
-        productDemand.teamNameList.push(...getTeams.getData)
+        productDemand.teamNameList.push(...responseGetTeams.getData)
         productDemandList.push(productDemand);
       }
       returnObject.setData = productDemandList;
     } catch (error) {
-      console.log(error.message);
       returnObject.Result.push(
         new HttpError(SystemErrorMessage.ProcessError)
       );
@@ -72,28 +92,44 @@ export class ProductDemandService implements IProductDemandService {
     try {
       returnObject = new GenericResponse<number>();
       this.productDemandModel = new ProductDemandModel();
-      let saveProductDemandResponse = await this.productDemandModel.Create(entity);
-      if (!saveProductDemandResponse.getSuccess) {
-        returnObject.Result.push(...saveProductDemandResponse.Result);
-        returnObject.setSuccess = saveProductDemandResponse.getSuccess;
+      let responseControlProductDemand = await this.productDemandModel.ControlProductDemand(entity);
+      if(!responseControlProductDemand.getSuccess)
+      {
+        returnObject.Result.push(...responseControlProductDemand.Result);
+        returnObject.setSuccess = responseControlProductDemand.getSuccess;
+        returnObject.successMessage = responseControlProductDemand.successMessage;
+
+      }
+      if(responseControlProductDemand.getData == 1)
+      {
+        returnObject.Result.push(new BadRequestError("SameContentError"));
+        return returnObject;
+      }
+      let responseSaveProductDemand = await this.productDemandModel.Create(entity);
+      if (!responseSaveProductDemand.getSuccess) {
+        returnObject.Result.push(...responseSaveProductDemand.Result);
+        returnObject.setSuccess = responseSaveProductDemand.getSuccess;
+        returnObject.successMessage = responseSaveProductDemand.successMessage;
         return returnObject;
       }
       for (let i: number = 0; i < entity.teamNameList.length; i++) {
       
         let saveTeamProductDemand = new ProductDemand();
-        saveTeamProductDemand.productId = saveProductDemandResponse.getData;
+        saveTeamProductDemand.productId = responseSaveProductDemand.getData;
         saveTeamProductDemand.teamId = entity.teamNameList[i].teamId;
         saveTeamProductDemand.quantity = entity.teamNameList[i].quantity;
         saveTeamProductDemand.quantityPrice = entity.quantityPrice;
         saveTeamProductDemand.totalPrice =  CalculaterTotalProductQuantityPrice(entity.teamNameList[i].quantity,entity.quantityPrice);
         saveTeamProductDemand.recived = 0 ;
-        let saveTeamProductDemandResponse = 
+        let responseSaveTeamProductDemand = 
           await this.productDemandModel.SaveTeamsProductDemand(
             saveTeamProductDemand
           );
-        if (!saveTeamProductDemandResponse.getSuccess) {
-          returnObject.Result.push(...saveTeamProductDemandResponse.Result);
-          returnObject.setSuccess = saveTeamProductDemandResponse.getSuccess;
+        if (!responseSaveTeamProductDemand.getSuccess) {
+          returnObject.Result.push(...responseSaveTeamProductDemand.Result);
+          returnObject.setSuccess = responseSaveTeamProductDemand.getSuccess;
+          returnObject.successMessage = responseSaveTeamProductDemand.successMessage;
+
           return returnObject;
         }
       }
@@ -105,18 +141,161 @@ export class ProductDemandService implements IProductDemandService {
     }
  return returnObject;
   }
-  Update(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    throw new Error("Method not implemented.");
+ async Update(entity: ProductDemand ): Promise<GenericResponse<number>> {
+    let returnObject:GenericResponse<number> = null;
+    try {
+      returnObject = new GenericResponse<number>();
+      this.productDemandModel = new ProductDemandModel();
+
+      if(!entity.productId)
+      {
+          returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+          return returnObject;
+      }
+     
+        let responseUpdateProductDemand = await this.productDemandModel.Update(entity);
+      if(!responseUpdateProductDemand.getSuccess)
+      {
+        returnObject.Result.push(...responseUpdateProductDemand.Result);
+        returnObject.setSuccess = responseUpdateProductDemand.getSuccess;
+        returnObject.successMessage = responseUpdateProductDemand.successMessage;
+
+        return returnObject;
+      }
+       
+      if(!entity.teamNameList)
+      {
+        returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+        return returnObject;
+      }
+      for(let i = 0 ; i < entity.teamNameList.length; i++)
+      { let productDemand =  new ProductDemand();
+         if(entity.teamNameList[i]?.transactionType == TransactionType.TeamCreate)
+         {
+           productDemand.productId = entity.productId;
+           productDemand.teamId = entity.teamNameList[i]?.teamId;
+           productDemand.quantity = entity.teamNameList[i]?.quantity;
+           productDemand.quantityPrice = entity.quantityPrice;
+           productDemand.totalPrice = entity.totalPrice;
+           productDemand.recived = 0;
+           let responseSaveTeamProductDemand = await this.productDemandModel.
+                                                     SaveTeamsProductDemand(productDemand);
+           if(!responseSaveTeamProductDemand.getSuccess)
+           {
+             returnObject.Result.push(...responseSaveTeamProductDemand.Result);
+             returnObject.setSuccess = responseSaveTeamProductDemand.getSuccess;
+             returnObject.successMessage = responseSaveTeamProductDemand.successMessage;
+
+             return returnObject;
+           }
+         }
+         else if (entity.teamNameList[i]?.transactionType == TransactionType.TeamUpdate)
+         {
+          productDemand.teamProductDemandId =  entity.teamNameList[i]?.teamProductDemandId;
+          productDemand.productId = entity.productId;
+          productDemand.teamId = entity.teamNameList[i]?.teamId;
+          productDemand.quantity = entity.teamNameList[i]?.quantity;
+          productDemand.quantityPrice = entity.quantityPrice;
+          productDemand.totalPrice = entity.totalPrice;
+          let responseUpdateTeamProductDemand = await this.productDemandModel.
+                                                      UpdateTeamProductDemand(productDemand);
+          if(!responseUpdateTeamProductDemand.getSuccess)
+          {
+            returnObject.Result.push(...responseUpdateTeamProductDemand.Result);
+            returnObject.setSuccess = responseUpdateTeamProductDemand.getSuccess;
+            returnObject.successMessage = responseUpdateProductDemand.successMessage;
+
+            return returnObject;
+          }
+         }
+         else if(entity.teamNameList[i]?.transactionType == TransactionType.TeamDelete)
+         {
+          productDemand.teamProductDemandId =  entity.teamNameList[i]?.teamProductDemandId;
+          productDemand.transactionType = entity.teamNameList[i]?.transactionType;
+          let responseDeleteTeamProduct = await this.productDemandModel.Delete(productDemand);
+          if(!responseDeleteTeamProduct.getSuccess)
+          {
+            returnObject.Result.push(...responseDeleteTeamProduct.Result);
+            returnObject.setSuccess = responseDeleteTeamProduct.getSuccess;
+            returnObject.successMessage = responseDeleteTeamProduct.successMessage;
+
+            return returnObject;
+          }
+         }
+         else
+         {
+           returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+           return returnObject;
+         }
+      }
+      
+    } catch (error) {
+      
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+    return returnObject;
   }
-  Delete(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    throw new Error("Method not implemented.");
+ async Delete(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject:GenericResponse<number> = null;
+    try {
+      returnObject = new GenericResponse<number>();
+      this.productDemandModel = new ProductDemandModel();
+      let responseDeleteProduct = await this.productDemandModel.Delete(entity);
+      if(!responseDeleteProduct.getSuccess)
+      {
+        returnObject.Result.push(...responseDeleteProduct.Result);
+        returnObject.setSuccess = responseDeleteProduct.getSuccess;
+        returnObject.successMessage = responseDeleteProduct.successMessage;
+
+      }
+      
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+      
+    }
+    return returnObject;
   }
   
-  GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
-    throw new Error("Method not implemented.");
+async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
+    let returnObject:GenericResponse<ProductDemand[]> = null;
+    try {
+      returnObject = new GenericResponse<ProductDemand[]>();
+      
+      this.productDemandModel = new ProductDemandModel();
+      let responseGetPurchasedProductDemand = await 
+      this.productDemandModel.GetPurchasedProductDemand();
+      if(!responseGetPurchasedProductDemand.getSuccess)
+      {
+        returnObject.Result.push(...responseGetPurchasedProductDemand.Result);
+        returnObject.setSuccess = responseGetPurchasedProductDemand.getSuccess;
+        returnObject.successMessage = responseGetPurchasedProductDemand.successMessage;
+      }
+      returnObject.setData = responseGetPurchasedProductDemand.getData;
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+    return returnObject;
   }
-  UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<Number>> {
-    throw new Error("Method not implemented.");
+  async UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<number>> {
+    let returnObject:GenericResponse<number> = null;
+    try {
+      returnObject = new GenericResponse<number>();
+      this.productDemandModel = new ProductDemandModel();
+      let responseUpdateRecivedProductDemand = await 
+      this.productDemandModel.UpdateRecivedProductDemand(entity);
+      if(!responseUpdateRecivedProductDemand.getSuccess)
+      {
+        returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
+        returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
+        returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+      }
+    } catch (error) {
+      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
+      return returnObject;
+    }
+    return returnObject;
   }
 }
-

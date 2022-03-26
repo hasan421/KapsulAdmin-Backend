@@ -27,16 +27,21 @@ export class TeamsService implements ITeamsService {
   ): Promise<GenericResponse<Teams[]>> {
     let returnObject: GenericResponse<Teams[]> = null;
     try {
+      
       returnObject = new GenericResponse<Teams[]>();
       this.teamsemandModel = new TeamsModel();
-      let getTeamsNameByProductCodeResponse =
-        await this.teamsemandModel.GetTeamsByProductCode(productCode);
-      if (!getTeamsNameByProductCodeResponse.getSuccess) {
-        returnObject.Result.push(...getTeamsNameByProductCodeResponse.Result) ;
-        returnObject.setSuccess = getTeamsNameByProductCodeResponse.getSuccess;
+
+      let responseGetTeamsNameByProductCode =
+      await this.teamsemandModel.GetTeamsByProductCode(productCode);
+
+      if (!responseGetTeamsNameByProductCode.getSuccess) {
+        returnObject.Result.push(...responseGetTeamsNameByProductCode.Result) ;
+        returnObject.setSuccess = responseGetTeamsNameByProductCode.getSuccess;
+        returnObject.successMessage = responseGetTeamsNameByProductCode.successMessage;
         return returnObject;
       }
-      returnObject.setData = getTeamsNameByProductCodeResponse.getData;
+
+      returnObject.setData = responseGetTeamsNameByProductCode.getData;
       
     } catch (error) {
       returnObject.Result.push(
@@ -49,16 +54,21 @@ export class TeamsService implements ITeamsService {
  async GetTeamsName(): Promise<GenericResponse<Teams[]>> {
     let returnObject: GenericResponse<Teams[]> = null;
     try {
-        returnObject = new GenericResponse<Teams[]>();
+
+      returnObject = new GenericResponse<Teams[]>();
       this.teamsemandModel = new TeamsModel();
-      let getTeamsNameResponse =
-        await this.teamsemandModel.GetTeamsName();
-      if (!getTeamsNameResponse.getSuccess) {
-        returnObject.Result.push(...getTeamsNameResponse.Result);
-        returnObject.setSuccess = getTeamsNameResponse.getSuccess;
+
+      let responseGetTeamsName =
+      await this.teamsemandModel.GetTeamsName();
+
+      if (!responseGetTeamsName.getSuccess) {
+        returnObject.Result.push(...responseGetTeamsName.Result);
+        returnObject.setSuccess = responseGetTeamsName.getSuccess;
+        returnObject.successMessage = responseGetTeamsName.successMessage;
         return returnObject;
       }
-      returnObject.setData = getTeamsNameResponse.getData;
+
+      returnObject.setData = responseGetTeamsName.getData;
     } catch (error) {
       returnObject.Result.push(
         new HttpError(SystemErrorMessage.ProcessError)

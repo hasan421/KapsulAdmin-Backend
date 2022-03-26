@@ -21,42 +21,50 @@ export class TeamsModel implements ITeams{
     Delete(entity: Teams): Promise<GenericResponse<Number>> {
         throw new Error("Method not implemented.");
     }
+
     async GetTeamsName(): Promise<GenericResponse<Teams[]>> {
         let returnObject: GenericResponse<Teams[]> = null;
         try {
+
           returnObject = new GenericResponse<Teams[]>();
           let queryManager = getManager();
-          let getTeamsNameResponse = await queryManager.query(
+          let responseGetTeamsName= await queryManager.query(
             TeamsScript.selectTeamsName,
           );
-          returnObject.setData = getTeamsNameResponse;
+          returnObject.setData = responseGetTeamsName;
+
         } catch (error) {
           returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
           return returnObject;
         }
         return returnObject;
     }
+
    async GetTeamsByProductCode(productCode: string): Promise<GenericResponse<Teams[]>> {
         let returnObject: GenericResponse<Teams[]> = null;
-        let teams = null;
+        let teams:Teams = null;
         let teamsList = new Array<Teams>();
         try {
           returnObject = new GenericResponse<Teams[]>();
           let queryManager = getManager();
-          let getTeamsByProductCodeResponse = await queryManager.query(
+          let responseGetTeamsByProductCodeResponse = await queryManager.query(
             TeamsScript.selectTeamsByProductCode,
             [productCode]
           );
-          for(let i = 0; i < getTeamsByProductCodeResponse.length ;i++)
-          {    teams = new Teams();
-               teams.teamName = getTeamsByProductCodeResponse[i].TeamName;
-               teams.quantity = getTeamsByProductCodeResponse[i].Quantity;
-               teams.quantityPrice = getTeamsByProductCodeResponse[i].QuantityPrice;
-               teams.totalPrice = getTeamsByProductCodeResponse[i].TotalPrice
-               console.log(teams);
-               teamsList.push(teams);
+
+          if(responseGetTeamsByProductCodeResponse)
+          {
+            for(let i = 0; i < responseGetTeamsByProductCodeResponse.length ;i++)
+            {    teams = new Teams();
+                 teams.teamProductDemandId = responseGetTeamsByProductCodeResponse[i].TeamProductDemandId;
+                 teams.teamName = responseGetTeamsByProductCodeResponse[i].TeamName;
+                 teams.quantity = responseGetTeamsByProductCodeResponse[i].Quantity;
+                 teamsList.push(teams);
+            }
           }
+         
           returnObject.setData = teamsList;
+          
         } catch (error) {
           console.log(error.message);
           returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));

@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -20,7 +19,9 @@ SET NOCOUNT ON
 BEGIN
 
 SELECT
-TS.TeamName
+TP.TeamProductDemandId,
+TS.TeamName,
+TP.Quantity
 FROM ERP.TeamsProductDemands TP WITH (NOLOCK)
 INNER JOIN ERP.Teams TS WITH (NOLOCK) 
 ON TP.TeamId = TS.TeamId
@@ -29,3 +30,4 @@ ON PS.ProductId = TP.ProductId
 WHERE PS.ProductCode = @ProductCode AND  
       TP.Recived = 0 AND TP.IsDeleted = 0
 END
+GO

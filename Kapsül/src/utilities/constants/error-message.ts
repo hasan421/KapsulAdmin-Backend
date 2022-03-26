@@ -1,8 +1,6 @@
 const BadRequestErrorMessages = {
   BASIC_ERROR: _createBasicError("Bad Request"),
-  NonFieldMail: "Mail boş olamaz",
-  hasanaselam: "selam hasan",
-  emptyMail: "mail boş olamaz",
+  SameContentError:_createBasicError("Aynı ürün coduna sahip ürün olduğu için ekleyemezsiniz.")
 };
 
 const UnauthorizedErrorMessages = {

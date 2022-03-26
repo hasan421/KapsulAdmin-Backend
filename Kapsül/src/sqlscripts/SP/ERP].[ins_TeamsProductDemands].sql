@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -17,7 +16,9 @@ CREATE PROCEDURE [ERP].[ins_TeamsProductDemands]
     @ProductId INT,    
     @Quantity INT,
     @QuantityPrice NUMERIC(18,2),
-    @TotalPrice NUMERIC(18,2)
+    @TotalPrice NUMERIC(18,2),
+    @Recived TINYINT
+
   
 )
 AS
@@ -31,6 +32,7 @@ INSERT INTO [ERP].[TeamsProductDemands]
    Quantity,
    QuantityPrice,
    TotalPrice,
+   Recived,
    SystemDate
 
 )
@@ -41,7 +43,9 @@ VALUES
     @Quantity,
     @QuantityPrice,
     @TotalPrice,
+    @Recived,
     GETDATE()
 )
 SELECT CAST(SCOPE_IDENTITY() AS INT)
 END
+GO

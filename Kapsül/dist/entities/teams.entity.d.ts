@@ -1,4 +1,5 @@
 export declare class Teams {
+    teamProductDemandId: number;
     teamId: number;
     teamName: string;
     establishmentDate: Date;
@@ -12,6 +13,7 @@ export declare class Teams {
     totalPrice: number;
     affiliatedInstitutionId: number;
     isDeleted: number;
+    transactionType: number;
     systemDate: Date;
     updateSystemDate: Date;
 }

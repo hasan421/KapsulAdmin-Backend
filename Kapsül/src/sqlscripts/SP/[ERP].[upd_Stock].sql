@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -11,7 +10,7 @@ Last Modified By:
 Last Modification Date:
 */
 
-CREATE PROCEDURE [ERP].[upd_Stock]
+ALTER PROCEDURE [ERP].[upd_Stock]
 (
     @StockId INT,
     @ProductId INT,
@@ -29,6 +28,7 @@ SET ProductId = @ProductId,
     QuantityType = @QuantityType,
     UpdateSystemDate = GETDATE()
 
-WHERE ProductId = @ProductId
+WHERE StockId = @StockId
 
 END
+GO

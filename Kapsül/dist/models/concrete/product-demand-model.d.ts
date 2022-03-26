@@ -9,4 +9,7 @@ export declare class ProductDemandModel implements IProductDemandModel {
     UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<Number>>;
     GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>>;
     SaveTeamsProductDemand(entity: ProductDemand): Promise<GenericResponse<number>>;
+    GetProductTotalQuantityAndTotalPrice(entity: ProductDemand): Promise<GenericResponse<ProductDemand>>;
+    ControlProductDemand(entity: ProductDemand): Promise<GenericResponse<number>>;
+    UpdateTeamProductDemand(entity: ProductDemand): Promise<GenericResponse<number>>;
 }

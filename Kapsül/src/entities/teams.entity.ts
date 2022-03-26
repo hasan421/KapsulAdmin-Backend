@@ -1,5 +1,6 @@
 export class Teams
 {
+    teamProductDemandId:number
     teamId:number
     teamName:string 
     establishmentDate:Date
@@ -13,6 +14,7 @@ export class Teams
     totalPrice:number
     affiliatedInstitutionId:number
     isDeleted:number
+    transactionType:number
     systemDate:Date
     updateSystemDate:Date
 }

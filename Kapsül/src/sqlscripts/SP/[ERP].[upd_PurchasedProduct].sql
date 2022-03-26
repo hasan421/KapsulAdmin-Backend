@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -20,6 +19,8 @@ SET NOCOUNT ON
 BEGIN
 UPDATE ERP.TeamsProductDemands 
 SET Recived = 1
-WHERE ProductId = @ProductId
+WHERE Recived = 0 AND 
+      ProductId = @ProductId
 
 END
+GO

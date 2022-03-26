@@ -38,6 +38,7 @@ class ConfigService {
       password: this.getValue('MSSQL_PASSWORD'),
       database: this.getValue('MSSQL_DATABASE'),
 
+
       migrationsTableName: 'migration',
 
       migrations: ['src/migration/*.ts'],

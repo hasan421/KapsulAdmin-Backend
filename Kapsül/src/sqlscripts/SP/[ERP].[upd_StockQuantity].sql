@@ -1,6 +1,5 @@
-USE [KAPSUL]
-GO
 SET ANSI_NULLS ON
+GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
@@ -19,8 +18,9 @@ AS
 SET NOCOUNT ON
 BEGIN
 UPDATE ERP.Stocks  
-SET StockQuantity = @StockQuantity
+SET StockQuantity = @StockQuantity,
     UpdateSystemDate = GETDATE()
 WHERE StockId = @StockId
 
 END
+GO

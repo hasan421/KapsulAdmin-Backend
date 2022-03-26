@@ -1,43 +1,26 @@
-import { ProductDemand } from "src/entities/product-demand.entity";
 import { Teams } from "src/entities/teams.entity";
 
-
-const CalculaterTotalProductQuantityPrice = (quantity:number,quantityPrice:number):number =>{
+const GroupBy = (array, key) => {
+    // Return the end result
+    return array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+            currentValue
+        );
+        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+        return result;
+    }, {}); // empty object is the initial value for result object
+};
+const CalculaterTotalProductQuantityPrice = (
+    quantity: number,
+    quantityPrice: number
+): number => {
     let totalProductQuantityPrice = 0;
-     if(quantity && quantityPrice)
-     {
-         totalProductQuantityPrice = quantity * quantityPrice;
-     }
-   
-     return totalProductQuantityPrice;
- }
- const CalculaterTotalProductQuantity=(teamNameList:Teams[])=>{
-    let totalProductQuantity = 0;
-    if(teamNameList)
-    {
-        for(let i = 0 ; i < teamNameList.length; i++)
-        {
-            totalProductQuantity += teamNameList[i].quantity; 
-
-        }
+    if (quantity && quantityPrice) {
+        totalProductQuantityPrice = quantity * quantityPrice;
     }
-    return totalProductQuantity;
- }
- const CalculaterTotalPrice=(teamNameList:Teams[])=>{
-    let totalProductTotalPrice = 0;
-    if(teamNameList)
-    {
-        for(let i = 0 ; i < teamNameList.length; i++)
-        {
-            totalProductTotalPrice += teamNameList[i].totalPrice; 
 
-        }
-    }
-    return totalProductTotalPrice;
- }
- 
- export{
-    CalculaterTotalProductQuantityPrice,
-    CalculaterTotalProductQuantity,
-    CalculaterTotalPrice
- }
+    return totalProductQuantityPrice;
+};
+
+export { CalculaterTotalProductQuantityPrice, GroupBy };
