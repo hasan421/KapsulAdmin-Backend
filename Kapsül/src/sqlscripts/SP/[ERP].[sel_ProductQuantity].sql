@@ -10,9 +10,10 @@ Last Modified By:
 Last Modification Date:
 */
 
-CREATE PROCEDURE [ERP].[sel_ProductQuantity]
+ALTER PROCEDURE [ERP].[sel_ProductQuantity]
 (
-    @ProductCode VARCHAR(100)
+    @ProductCode VARCHAR(100),
+    @Recived BIT 
 )
 AS
 SET NOCOUNT ON
@@ -24,7 +25,8 @@ TP.QuantityPrice
 FROM ERP.TeamsProductDemands TP
 INNER JOIN ERP.ProductDemands PS ON PS.ProductId = TP.ProductId
 INNER JOIN ERP.Teams TS ON TS.TeamId = TP.TeamId
-WHERE PS.ProductCode = @ProductCode
+WHERE PS.ProductCode = @ProductCode AND 
+      TP.Recived = @Recived
 GROUP BY PS.ProductCode,TP.QuantityPrice
 END
 GO

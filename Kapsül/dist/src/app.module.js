@@ -1,0 +1,26 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppModule = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const mssql_config_1 = require("./config/mssql-config");
+const product_demand_controller_1 = require("./controllers/product-demand-controller");
+const product_demand_service_1 = require("./services/concrete/product-demand-service");
+const teams_service_1 = require("./services/concrete/teams-service");
+let AppModule = class AppModule {
+};
+AppModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forRoot(mssql_config_1.configService.getTypeOrmConfig())],
+        controllers: [product_demand_controller_1.ProductDemandController],
+        providers: [product_demand_service_1.ProductDemandService, teams_service_1.TeamsService],
+    })
+], AppModule);
+exports.AppModule = AppModule;
+//# sourceMappingURL=app.module.js.map

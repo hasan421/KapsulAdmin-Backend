@@ -17,7 +17,6 @@ export class ProductDemandController {
     let returnObject: GenericResponse<number> = null;
     try {
       returnObject = new GenericResponse<number>();
-
       let saveProductDemandResponse = await this.appService.Create(
         productDemand
       );
@@ -44,7 +43,9 @@ export class ProductDemandController {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
-      let getProductDemandResponse = await this.appService.GetAll();
+      let productDemand = new ProductDemand();
+      productDemand.recived = 0;
+      let getProductDemandResponse = await this.appService.GetAll(productDemand);
       if (!getProductDemandResponse.getSuccess) {
         returnObject.Result.push(...getProductDemandResponse.Result);
         returnObject.setSuccess = getProductDemandResponse.getSuccess;
@@ -97,20 +98,23 @@ export class ProductDemandController {
     }
     return returnObject;
   }
-  @Get("get-purchased-product-demand")
-  async GetPurchasedProductDemandController(
+  @Get("get-purchased-product")
+  async GetPurchasedProductController(
     @Res({ passthrough: true }) response
   ): Promise<GenericResponse<ProductDemand[]>> 
   {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     try {
       returnObject = new GenericResponse<ProductDemand[]>();
-      let responseGetPurchasedProductDemand = await this.appService.GetPurchasedProductDemand();
-      if (!responseGetPurchasedProductDemand.getSuccess) {
-        returnObject.Result.push(...responseGetPurchasedProductDemand.Result);
-        returnObject.setSuccess = responseGetPurchasedProductDemand.getSuccess;
-        returnObject.successMessage = responseGetPurchasedProductDemand.successMessage;
+      let productDemand = new ProductDemand();
+      productDemand.recived = 1;
+      let responseGetPurchasedProduct = await this.appService.GetAll(productDemand);
+      if (!responseGetPurchasedProduct.getSuccess) {
+        returnObject.Result.push(...responseGetPurchasedProduct.Result);
+        returnObject.setSuccess = responseGetPurchasedProduct.getSuccess;
+        returnObject.successMessage = responseGetPurchasedProduct.successMessage;
       }
+      returnObject.setData = responseGetPurchasedProduct.getData;
     } catch (error) {
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
     }

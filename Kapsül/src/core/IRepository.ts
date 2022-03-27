@@ -6,7 +6,7 @@ import { GenericResponse } from "./generic-response";
  *@param T - IGenericeResponse sınıfından türemiş bir sınıfı temsil etmektedir
  */
 export interface IRepository<T> {
-  GetAll(): Promise<GenericResponse<T[]>>;
+  GetAll(entity:T | null): Promise<GenericResponse<T[]>>;
   
   Create(entity: T| T[] ): Promise<GenericResponse<number>>;
 

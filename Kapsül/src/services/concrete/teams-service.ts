@@ -23,7 +23,7 @@ export class TeamsService implements ITeamsService {
     throw new Error("Method not implemented.");
   }
   async GetTeamsByProductCode(
-    productCode: string
+    entity: ProductDemand
   ): Promise<GenericResponse<Teams[]>> {
     let returnObject: GenericResponse<Teams[]> = null;
     try {
@@ -32,7 +32,7 @@ export class TeamsService implements ITeamsService {
       this.teamsemandModel = new TeamsModel();
 
       let responseGetTeamsNameByProductCode =
-      await this.teamsemandModel.GetTeamsByProductCode(productCode);
+      await this.teamsemandModel.GetTeamsByProductCode(entity);
 
       if (!responseGetTeamsNameByProductCode.getSuccess) {
         returnObject.Result.push(...responseGetTeamsNameByProductCode.Result) ;

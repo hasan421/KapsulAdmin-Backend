@@ -5,6 +5,7 @@ import { ProductDemand } from "src/entities/product-demand.entity";
 import { CalculaterTotalProductQuantityPrice } from "src/helper/product-quantity-calculater";
 import { ProductDemandModel } from "src/models/concrete/product-demand-model";
 import { TeamsModel } from "src/models/concrete/teams-model";
+import { ProductProcess } from "src/process/product-process";
 import { SystemErrorMessage } from "src/utilities/constants/error-message";
 import { TransactionType } from "src/utilities/enums/transaction-type";
 import { IProductDemandService } from "../abstract/IProductDemandService";
@@ -15,7 +16,7 @@ export class ProductDemandService implements IProductDemandService {
   private teamsModel: TeamsModel;
 
 
-  async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
+  async GetAll(entity:ProductDemand | null): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     let productDemand:ProductDemand = null;
     let productDemandList = Array<ProductDemand>();
@@ -23,7 +24,7 @@ export class ProductDemandService implements IProductDemandService {
       returnObject = new GenericResponse<ProductDemand[]>();
 
       this.productDemandModel = new ProductDemandModel();
-      let responseGetProductDemand = await this.productDemandModel.GetAll();
+      let responseGetProductDemand = await this.productDemandModel.GetAll(entity);
 
       if (!responseGetProductDemand.getSuccess) {
         returnObject.Result.push(...responseGetProductDemand.Result);
@@ -36,9 +37,13 @@ export class ProductDemandService implements IProductDemandService {
         returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError))
       }
       for(let i = 0 ; i < responseGetProductDemand.getData.length; i++)
-      {     
+      { 
+        productDemand = new ProductDemand();
+        productDemand.productCode = responseGetProductDemand.getData[i].productCode;
+        productDemand.recived = entity.recived;
         let responseProductQuantity = await this.productDemandModel.
-                                      GetProductTotalQuantityAndTotalPrice(responseGetProductDemand.getData[i]); 
+                                      GetProductTotalQuantityAndTotalPrice(productDemand); 
+                                      
         if(!responseProductQuantity.getSuccess) 
         { 
           returnObject.Result.push(...responseProductQuantity.Result); 
@@ -53,7 +58,7 @@ export class ProductDemandService implements IProductDemandService {
 
         }
         this.teamsModel = new TeamsModel();
-        let responseGetTeams = await this.teamsModel.GetTeamsByProductCode(responseGetProductDemand.getData[i].productCode);
+        let responseGetTeams = await this.teamsModel.GetTeamsByProductCode(productDemand);
         if(!responseGetTeams.getSuccess)
         {
           returnObject.Result.push(...responseGetTeams.Result);
@@ -119,7 +124,8 @@ export class ProductDemandService implements IProductDemandService {
         saveTeamProductDemand.teamId = entity.teamNameList[i].teamId;
         saveTeamProductDemand.quantity = entity.teamNameList[i].quantity;
         saveTeamProductDemand.quantityPrice = entity.quantityPrice;
-        saveTeamProductDemand.totalPrice =  CalculaterTotalProductQuantityPrice(entity.teamNameList[i].quantity,entity.quantityPrice);
+        saveTeamProductDemand.totalPrice = CalculaterTotalProductQuantityPrice(entity.teamNameList[i].quantity,
+                                                                                entity.quantityPrice);
         saveTeamProductDemand.recived = 0 ;
         let responseSaveTeamProductDemand = 
           await this.productDemandModel.SaveTeamsProductDemand(
@@ -258,27 +264,6 @@ export class ProductDemandService implements IProductDemandService {
     return returnObject;
   }
   
-async GetPurchasedProductDemand(): Promise<GenericResponse<ProductDemand[]>> {
-    let returnObject:GenericResponse<ProductDemand[]> = null;
-    try {
-      returnObject = new GenericResponse<ProductDemand[]>();
-      
-      this.productDemandModel = new ProductDemandModel();
-      let responseGetPurchasedProductDemand = await 
-      this.productDemandModel.GetPurchasedProductDemand();
-      if(!responseGetPurchasedProductDemand.getSuccess)
-      {
-        returnObject.Result.push(...responseGetPurchasedProductDemand.Result);
-        returnObject.setSuccess = responseGetPurchasedProductDemand.getSuccess;
-        returnObject.successMessage = responseGetPurchasedProductDemand.successMessage;
-      }
-      returnObject.setData = responseGetPurchasedProductDemand.getData;
-    } catch (error) {
-      returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
-      return returnObject;
-    }
-    return returnObject;
-  }
   async UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<number>> {
     let returnObject:GenericResponse<number> = null;
     try {

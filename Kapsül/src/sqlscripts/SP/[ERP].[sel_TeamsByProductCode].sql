@@ -10,9 +10,10 @@ Last Modified By:
 Last Modification Date:
 */
 
-CREATE PROCEDURE [ERP].[sel_TeamsByProductCode]
+ALTER PROCEDURE [ERP].[sel_TeamsByProductCode]
 (
-    @ProductCode VARCHAR(100)
+    @ProductCode VARCHAR(100),
+    @Recived BIT 
 )
 AS
 SET NOCOUNT ON
@@ -28,6 +29,7 @@ ON TP.TeamId = TS.TeamId
 INNER JOIN ERP.ProductDemands PS WITH (NOLOCK) 
 ON PS.ProductId = TP.ProductId 
 WHERE PS.ProductCode = @ProductCode AND  
-      TP.Recived = 0 AND TP.IsDeleted = 0
+      TP.Recived = @Recived AND 
+      TP.IsDeleted = 0
 END
 GO

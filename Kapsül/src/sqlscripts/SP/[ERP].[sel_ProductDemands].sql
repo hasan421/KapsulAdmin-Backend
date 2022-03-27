@@ -10,8 +10,10 @@ Last Modified By:
 Last Modification Date:
 */
 
-CREATE PROCEDURE [ERP].[sel_ProductDemands]
-
+ALTER PROCEDURE [ERP].[sel_ProductDemands]
+(
+    @Recived BIT 
+)
 AS
 SET NOCOUNT ON
 BEGIN
@@ -26,9 +28,7 @@ INNER JOIN ERP.ProductDemands PS WITH (NOLOCK)
 ON TP.ProductId = PS.ProductId
 INNER JOIN ERP.Teams TS WITH (NOLOCK)
 ON TS.TeamId = TP.TeamId
-WHERE TP.Recived = 0 AND TP.IsDeleted = 0
-
-
+WHERE TP.Recived = @Recived AND TP.IsDeleted = 0
 
 END
 GO

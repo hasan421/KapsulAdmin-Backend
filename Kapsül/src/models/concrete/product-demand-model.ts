@@ -5,12 +5,9 @@ import { getManager } from "typeorm";
 import { ProductDemandScript } from "../spscripts/product-demand-script";
 import { HttpError } from "src/core/error/http-error";
 import { SystemErrorMessage } from "src/utilities/constants/error-message";
-import { from, groupBy } from "rxjs";
-
 export class ProductDemandModel implements IProductDemandModel {
  
-  
-  async GetAll(): Promise<GenericResponse<ProductDemand[]>> {
+  async GetAll(entitiy:ProductDemand | null): Promise<GenericResponse<ProductDemand[]>> {
     let returnObject: GenericResponse<ProductDemand[]> = null;
     let productDemand =  null;
     let productDemandList = new Array<ProductDemand>();
@@ -19,12 +16,13 @@ export class ProductDemandModel implements IProductDemandModel {
       returnObject = new GenericResponse<ProductDemand[]>();
       let queryManager = getManager();
       let responseGetProductDemand = await queryManager.query(
-        ProductDemandScript.selectProductDemandScript
+        ProductDemandScript.selectProductDemandScript,
+        [entitiy.recived]
       );
       if(responseGetProductDemand)
       {
         for(let i = 0; i < responseGetProductDemand.length ;i++)
-        {   productDemand = new ProductDemandModel();
+        {    productDemand = new ProductDemandModel();
              productDemand.productName = responseGetProductDemand[i].ProductName;
              productDemand.productCode = responseGetProductDemand[i].ProductCode;
              productDemand.productLink = responseGetProductDemand[i].ProductLink;
@@ -65,7 +63,6 @@ export class ProductDemandModel implements IProductDemandModel {
 
       returnObject.setData = responseSaveProductDemand[0][''];
     } catch (error) {
-      console.log(error.message);
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
       return returnObject;
     }
@@ -212,7 +209,10 @@ export class ProductDemandModel implements IProductDemandModel {
       let queryManager = getManager();
       let responseGetProductTotalQunatitity = await queryManager.query(
         ProductDemandScript.selectProductQuantity,
-        [entity.productCode]
+        [
+          entity.productCode,
+          entity.recived
+        ]
       );
       if(!responseGetProductTotalQunatitity)
       {

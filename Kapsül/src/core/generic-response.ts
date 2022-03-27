@@ -7,7 +7,7 @@ export class GenericResponse<T> {
     this.successMessage = null;
 
   }
-  private success = true;
+private success = true;
  private _successMessage: SuccessMessage;
   public get successMessage(): SuccessMessage {
    return this._successMessage

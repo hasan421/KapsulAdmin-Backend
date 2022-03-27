@@ -40,7 +40,7 @@ export class TeamsModel implements ITeams{
         return returnObject;
     }
 
-   async GetTeamsByProductCode(productCode: string): Promise<GenericResponse<Teams[]>> {
+   async GetTeamsByProductCode(entity: ProductDemand): Promise<GenericResponse<Teams[]>> {
         let returnObject: GenericResponse<Teams[]> = null;
         let teams:Teams = null;
         let teamsList = new Array<Teams>();
@@ -49,7 +49,10 @@ export class TeamsModel implements ITeams{
           let queryManager = getManager();
           let responseGetTeamsByProductCodeResponse = await queryManager.query(
             TeamsScript.selectTeamsByProductCode,
-            [productCode]
+            [
+              entity.productCode,
+              entity.recived
+            ]
           );
 
           if(responseGetTeamsByProductCodeResponse)
