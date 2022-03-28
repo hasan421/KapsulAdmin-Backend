@@ -5,7 +5,6 @@ import { ProductDemand } from "src/entities/product-demand.entity";
 import { CalculaterTotalProductQuantityPrice } from "src/helper/product-quantity-calculater";
 import { ProductDemandModel } from "src/models/concrete/product-demand-model";
 import { TeamsModel } from "src/models/concrete/teams-model";
-import { ProductProcess } from "src/process/product-process";
 import { SystemErrorMessage } from "src/utilities/constants/error-message";
 import { TransactionType } from "src/utilities/enums/transaction-type";
 import { IProductDemandService } from "../abstract/IProductDemandService";
@@ -43,13 +42,12 @@ export class ProductDemandService implements IProductDemandService {
         productDemand.recived = entity.recived;
         let responseProductQuantity = await this.productDemandModel.
                                       GetProductTotalQuantityAndTotalPrice(productDemand); 
-                                      
+                                     
         if(!responseProductQuantity.getSuccess) 
         { 
           returnObject.Result.push(...responseProductQuantity.Result); 
           returnObject.setSuccess = responseProductQuantity.getSuccess; 
           returnObject.successMessage = responseProductQuantity.successMessage;
-
         } 
         
         if(!responseProductQuantity && !responseProductQuantity.getData) 
@@ -103,6 +101,7 @@ export class ProductDemandService implements IProductDemandService {
         returnObject.Result.push(...responseControlProductDemand.Result);
         returnObject.setSuccess = responseControlProductDemand.getSuccess;
         returnObject.successMessage = responseControlProductDemand.successMessage;
+        return returnObject;
 
       }
       if(responseControlProductDemand.getData == 1)
@@ -135,7 +134,6 @@ export class ProductDemandService implements IProductDemandService {
           returnObject.Result.push(...responseSaveTeamProductDemand.Result);
           returnObject.setSuccess = responseSaveTeamProductDemand.getSuccess;
           returnObject.successMessage = responseSaveTeamProductDemand.successMessage;
-
           return returnObject;
         }
       }
@@ -153,19 +151,18 @@ export class ProductDemandService implements IProductDemandService {
       returnObject = new GenericResponse<number>();
       this.productDemandModel = new ProductDemandModel();
 
-      if(!entity.productId)
+      if(!(entity.productId))
       {
           returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
           return returnObject;
       }
      
-        let responseUpdateProductDemand = await this.productDemandModel.Update(entity);
+      let responseUpdateProductDemand = await this.productDemandModel.Update(entity);
       if(!responseUpdateProductDemand.getSuccess)
       {
         returnObject.Result.push(...responseUpdateProductDemand.Result);
         returnObject.setSuccess = responseUpdateProductDemand.getSuccess;
         returnObject.successMessage = responseUpdateProductDemand.successMessage;
-
         return returnObject;
       }
        
@@ -191,7 +188,6 @@ export class ProductDemandService implements IProductDemandService {
              returnObject.Result.push(...responseSaveTeamProductDemand.Result);
              returnObject.setSuccess = responseSaveTeamProductDemand.getSuccess;
              returnObject.successMessage = responseSaveTeamProductDemand.successMessage;
-
              return returnObject;
            }
          }
@@ -210,7 +206,6 @@ export class ProductDemandService implements IProductDemandService {
             returnObject.Result.push(...responseUpdateTeamProductDemand.Result);
             returnObject.setSuccess = responseUpdateTeamProductDemand.getSuccess;
             returnObject.successMessage = responseUpdateProductDemand.successMessage;
-
             return returnObject;
           }
          }
@@ -224,7 +219,6 @@ export class ProductDemandService implements IProductDemandService {
             returnObject.Result.push(...responseDeleteTeamProduct.Result);
             returnObject.setSuccess = responseDeleteTeamProduct.getSuccess;
             returnObject.successMessage = responseDeleteTeamProduct.successMessage;
-
             return returnObject;
           }
          }
@@ -253,6 +247,7 @@ export class ProductDemandService implements IProductDemandService {
         returnObject.Result.push(...responseDeleteProduct.Result);
         returnObject.setSuccess = responseDeleteProduct.getSuccess;
         returnObject.successMessage = responseDeleteProduct.successMessage;
+        return returnObject;
 
       }
       
@@ -276,6 +271,7 @@ export class ProductDemandService implements IProductDemandService {
         returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
         returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
         returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+        return returnObject;
       }
     } catch (error) {
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));

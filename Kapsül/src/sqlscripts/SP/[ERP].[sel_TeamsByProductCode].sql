@@ -22,6 +22,7 @@ BEGIN
 SELECT
 TP.TeamProductDemandId,
 TS.TeamName,
+TS.TeamId,
 TP.Quantity
 FROM ERP.TeamsProductDemands TP WITH (NOLOCK)
 INNER JOIN ERP.Teams TS WITH (NOLOCK) 

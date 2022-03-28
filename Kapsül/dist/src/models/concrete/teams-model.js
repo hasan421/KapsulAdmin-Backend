@@ -49,6 +49,7 @@ class TeamsModel {
                 for (let i = 0; i < responseGetTeamsByProductCodeResponse.length; i++) {
                     teams = new teams_entity_1.Teams();
                     teams.teamProductDemandId = responseGetTeamsByProductCodeResponse[i].TeamProductDemandId;
+                    teams.teamId = responseGetTeamsByProductCodeResponse[i].TeamId;
                     teams.teamName = responseGetTeamsByProductCodeResponse[i].TeamName;
                     teams.quantity = responseGetTeamsByProductCodeResponse[i].Quantity;
                     teamsList.push(teams);

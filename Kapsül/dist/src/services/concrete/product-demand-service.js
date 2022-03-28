@@ -87,6 +87,7 @@ let ProductDemandService = class ProductDemandService {
                 returnObject.Result.push(...responseControlProductDemand.Result);
                 returnObject.setSuccess = responseControlProductDemand.getSuccess;
                 returnObject.successMessage = responseControlProductDemand.successMessage;
+                return returnObject;
             }
             if (responseControlProductDemand.getData == 1) {
                 returnObject.Result.push(new http_error_1.BadRequestError("SameContentError"));
@@ -128,7 +129,7 @@ let ProductDemandService = class ProductDemandService {
         try {
             returnObject = new generic_response_1.GenericResponse();
             this.productDemandModel = new product_demand_model_1.ProductDemandModel();
-            if (!entity.productId) {
+            if (!(entity.productId)) {
                 returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
                 return returnObject;
             }
@@ -210,6 +211,7 @@ let ProductDemandService = class ProductDemandService {
                 returnObject.Result.push(...responseDeleteProduct.Result);
                 returnObject.setSuccess = responseDeleteProduct.getSuccess;
                 returnObject.successMessage = responseDeleteProduct.successMessage;
+                return returnObject;
             }
         }
         catch (error) {
@@ -228,6 +230,7 @@ let ProductDemandService = class ProductDemandService {
                 returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
                 returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
                 returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+                return returnObject;
             }
         }
         catch (error) {
