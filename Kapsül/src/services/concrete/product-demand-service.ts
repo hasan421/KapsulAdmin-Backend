@@ -259,20 +259,30 @@ export class ProductDemandService implements IProductDemandService {
     return returnObject;
   }
   
-  async UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<number>> {
+  async UpdateRecivedProductDemand(entity: ProductDemand[]): Promise<GenericResponse<number>> {
     let returnObject:GenericResponse<number> = null;
     try {
       returnObject = new GenericResponse<number>();
       this.productDemandModel = new ProductDemandModel();
-      let responseUpdateRecivedProductDemand = await 
-      this.productDemandModel.UpdateRecivedProductDemand(entity);
-      if(!responseUpdateRecivedProductDemand.getSuccess)
+      if(!entity && entity.length <= 0)
       {
-        returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
-        returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
-        returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+        returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
         return returnObject;
       }
+      for(let i  = 0 ; i < entity.length; i++)
+      {
+        let responseUpdateRecivedProductDemand = await 
+        this.productDemandModel.UpdateRecivedProductDemand(entity[i]);
+        if(!responseUpdateRecivedProductDemand.getSuccess)
+        {
+          returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
+          returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
+          returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+          return returnObject;
+        }
+
+      }
+     
     } catch (error) {
       returnObject.Result.push(new HttpError(SystemErrorMessage.ProcessError));
       return returnObject;
