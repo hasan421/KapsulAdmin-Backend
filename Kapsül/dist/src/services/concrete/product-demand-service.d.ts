@@ -8,5 +8,5 @@ export declare class ProductDemandService implements IProductDemandService {
     Create(entity: ProductDemand): Promise<GenericResponse<number>>;
     Update(entity: ProductDemand): Promise<GenericResponse<number>>;
     Delete(entity: ProductDemand): Promise<GenericResponse<number>>;
-    UpdateRecivedProductDemand(entity: ProductDemand): Promise<GenericResponse<number>>;
+    UpdateRecivedProductDemand(entity: ProductDemand[]): Promise<GenericResponse<number>>;
 }

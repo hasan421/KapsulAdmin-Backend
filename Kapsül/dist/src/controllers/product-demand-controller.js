@@ -115,7 +115,7 @@ let ProductDemandController = class ProductDemandController {
         }
         return returnObject;
     }
-    async UpdateRecivedProductDemandController(productDemand = null, response) {
+    async UpdateRecivedProductDemandController(productDemand, response) {
         let returnObject = null;
         try {
             returnObject = new generic_response_1.GenericResponse();
@@ -175,7 +175,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [product_demand_entity_1.ProductDemand, Object]),
+    __metadata("design:paramtypes", [Array, Object]),
     __metadata("design:returntype", Promise)
 ], ProductDemandController.prototype, "UpdateRecivedProductDemandController", null);
 ProductDemandController = __decorate([

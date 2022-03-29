@@ -9,5 +9,5 @@ export declare class ProductDemandController {
     DeleteProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
     UpdateTeamProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
     GetPurchasedProductController(response: any): Promise<GenericResponse<ProductDemand[]>>;
-    UpdateRecivedProductDemandController(productDemand: ProductDemand, response: any): Promise<GenericResponse<number>>;
+    UpdateRecivedProductDemandController(productDemand: ProductDemand[], response: any): Promise<GenericResponse<number>>;
 }

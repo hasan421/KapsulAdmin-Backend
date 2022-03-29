@@ -225,12 +225,18 @@ let ProductDemandService = class ProductDemandService {
         try {
             returnObject = new generic_response_1.GenericResponse();
             this.productDemandModel = new product_demand_model_1.ProductDemandModel();
-            let responseUpdateRecivedProductDemand = await this.productDemandModel.UpdateRecivedProductDemand(entity);
-            if (!responseUpdateRecivedProductDemand.getSuccess) {
-                returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
-                returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
-                returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+            if (!entity && entity.length <= 0) {
+                returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
                 return returnObject;
+            }
+            for (let i = 0; i < entity.length; i++) {
+                let responseUpdateRecivedProductDemand = await this.productDemandModel.UpdateRecivedProductDemand(entity[i]);
+                if (!responseUpdateRecivedProductDemand.getSuccess) {
+                    returnObject.Result.push(...responseUpdateRecivedProductDemand.Result);
+                    returnObject.setSuccess = responseUpdateRecivedProductDemand.getSuccess;
+                    returnObject.successMessage = responseUpdateRecivedProductDemand.successMessage;
+                    return returnObject;
+                }
             }
         }
         catch (error) {

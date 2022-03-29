@@ -123,7 +123,7 @@ export class ProductDemandController {
   }
   @Post("update-recived-product-demand")
   async UpdateRecivedProductDemandController(
-    @Body() productDemand: ProductDemand = null,
+    @Body() productDemand: ProductDemand[],
     @Res({ passthrough: true }) response
   ): Promise<GenericResponse<number>> {
     let returnObject: GenericResponse<number> = null;
