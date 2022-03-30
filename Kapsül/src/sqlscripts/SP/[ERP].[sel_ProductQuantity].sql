@@ -26,7 +26,8 @@ FROM ERP.TeamsProductDemands TP
 INNER JOIN ERP.ProductDemands PS ON PS.ProductId = TP.ProductId
 INNER JOIN ERP.Teams TS ON TS.TeamId = TP.TeamId
 WHERE PS.ProductCode = @ProductCode AND 
-      TP.Recived = @Recived
+      TP.Recived = 0 AND
+      TP.IsDeleted = 0
 GROUP BY PS.ProductCode,TP.QuantityPrice
 END
 GO

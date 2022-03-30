@@ -229,6 +229,10 @@ let ProductDemandService = class ProductDemandService {
                 returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
                 return returnObject;
             }
+            if (entity == null || entity == undefined || entity.length <= 0) {
+                returnObject.Result.push(new http_error_1.HttpError(error_message_1.SystemErrorMessage.ProcessError));
+                return returnObject;
+            }
             for (let i = 0; i < entity.length; i++) {
                 let responseUpdateRecivedProductDemand = await this.productDemandModel.UpdateRecivedProductDemand(entity[i]);
                 if (!responseUpdateRecivedProductDemand.getSuccess) {
